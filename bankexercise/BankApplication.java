@@ -46,8 +46,8 @@ public class BankApplication extends JFrame {
 	Map<String, JMenuItem> navMenuItems = new HashMap<String, JMenuItem>();
 	Map<String, JMenuItem> recordsMenuItems = new HashMap<String, JMenuItem>();
 	Map<String, JMenuItem> tranMenuItems = new HashMap<String, JMenuItem>();
+	Map<String, JMenuItem> fileMenuItems = new HashMap<String, JMenuItem>();
 	
-	JMenuItem open, save, saveAs;
 	JMenuItem closeApp;
 	JButton firstItemButton, lastItemButton, nextItemButton, prevItemButton;
 	
@@ -134,17 +134,12 @@ public class BankApplication extends JFrame {
     	
 	    	menuBar.add(transactionsMenu);
     	
-    	fileMenu = new JMenu("File");
+	    	fileMenu = new JMenu("File");
     	
-    	open = new JMenuItem("Open File");
-    	save = new JMenuItem("Save File");
-    	saveAs = new JMenuItem("Save As");
+	    	ArrayList<String> fileMenuLabels = new ArrayList<String>(Arrays.asList("Open File", "Save File", "Save As"));
+	    	setMenuItems(fileMenuItems, fileMenu, fileMenuLabels);
     	
-    	fileMenu.add(open);
-    	fileMenu.add(save);
-    	fileMenu.add(saveAs);
-    	
-    	menuBar.add(fileMenu);
+	    	menuBar.add(fileMenu);
     	
     	exitMenu = new JMenu("Exit");
     	
@@ -355,7 +350,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		open.addActionListener(new ActionListener(){
+		fileMenuItems.get("Open File").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				readFile();
 				currentItem=0;
@@ -366,13 +361,13 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		save.addActionListener(new ActionListener(){
+		fileMenuItems.get("Save File").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				writeFile();
 			}
 		});
 		
-		saveAs.addActionListener(new ActionListener(){
+		fileMenuItems.get("Save As").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveFileAs();
 			}
