@@ -42,7 +42,7 @@ public class BankApplication extends JFrame {
 	
 	JMenuBar menuBar;
 	JMenu navigateMenu, recordsMenu, transactionsMenu, fileMenu, exitMenu;
-	
+	Map<String, JMenu> menuBarItems = new HashMap<String, JMenu>();
 	Map<String, JMenuItem> navMenuItems = new HashMap<String, JMenuItem>();
 	Map<String, JMenuItem> recordsMenuItems = new HashMap<String, JMenuItem>();
 	Map<String, JMenuItem> tranMenuItems = new HashMap<String, JMenuItem>();
@@ -112,23 +112,16 @@ public class BankApplication extends JFrame {
 		setMenuItems(navMenuItems, navigateMenu, navMenuLabels);
     	
     		menuBar.add(navigateMenu);
-    	
-    		
-    		
+ 
     		
     		recordsMenu = new JMenu("Records");
     	
     		ArrayList<String> recMenuLabels = new ArrayList<String>(
     			Arrays.asList("Create Item", "Modify Item", "Delete Item", "Set Overdraft", "Set Interest"));
     		setMenuItems(recordsMenuItems, recordsMenu, recMenuLabels);
-    	
     		menuBar.add(recordsMenu);
     		
-    		
-    		
-    	
     		transactionsMenu = new JMenu("Transactions");
-    	
     		ArrayList<String> tranMenuLabels = new ArrayList<String>(Arrays.asList("Deposit", "Withdraw", "Calculate Interest"));
 	    	setMenuItems(tranMenuItems, transactionsMenu, tranMenuLabels);
     	
