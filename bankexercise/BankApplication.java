@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -123,15 +124,15 @@ public class BankApplication extends JFrame {
     	
 	    	menuBar.add(fileMenu);
     	
-    	exitMenu = new JMenu("Exit");
-    	
-    	closeApp = new JMenuItem("Close Application");
-    	
-    	exitMenu.add(closeApp);
-    	
-    	menuBar.add(exitMenu);
-    	
-    	setDefaultCloseOperation(EXIT_ON_CLOSE);
+	    	exitMenu = new JMenu("Exit");
+	    	
+	    	closeApp = new JMenuItem("Close Application");
+	    	
+	    	exitMenu.add(closeApp);
+	    	
+	    	menuBar.add(exitMenu);
+	    	
+	    	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	
 		recordsMenuItems.get("Set Overdraft").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -147,10 +148,8 @@ public class BankApplication extends JFrame {
 		});
 	
 		ActionListener first = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+			public void actionPerformed(ActionEvent e) {	
 				saveOpenValues();
-				
 				currentItem=0;
 				while(!table.containsKey(currentItem)){
 					currentItem++;
@@ -160,22 +159,17 @@ public class BankApplication extends JFrame {
 		};
 		
 		
-		ActionListener next1 = new ActionListener(){
+		ActionListener next = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
 				ArrayList<Integer> keyList = new ArrayList<Integer>();
 				int i=0;
-		
 				while(i<TABLE_SIZE){
 					i++;
 					if(table.containsKey(i))
 						keyList.add(i);
 				}
-				
 				int maxKey = Collections.max(keyList);
-		
 				saveOpenValues();	
-		
 					if(currentItem<maxKey){
 						currentItem++;
 						while(!table.containsKey(currentItem)){
@@ -229,8 +223,8 @@ public class BankApplication extends JFrame {
 			}
 		};
 		
-		nextItemButton.addActionListener(next1);
-		navMenuItems.get("Next Item").addActionListener(next1);
+		nextItemButton.addActionListener(next);
+		navMenuItems.get("Next Item").addActionListener(next);
 		
 		prevItemButton.addActionListener(prev);
 		navMenuItems.get("Previous Item").addActionListener(prev);
@@ -272,7 +266,6 @@ public class BankApplication extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				fields.get("Surname").setEditable(true);
 				fields.get("First Name").setEditable(true);
-				
 				openValues = true;
 			}
 		});
@@ -369,13 +362,7 @@ public class BankApplication extends JFrame {
 					   
 					 if(sName.equalsIgnoreCase((entry.getValue().getSurname().trim()))){
 						 found = true;
-						 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
-						 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
-						 fields.get("Surname").setText(entry.getValue().getSurname());
-						 fields.get("First Name").setText(entry.getValue().getFirstName());
-						 fields.get("Account Type").setText(entry.getValue().getAccountType());
-						 fields.get("Balance").setText(entry.getValue().getBalance()+"");
-						 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
+						 setTextFields(entry);
 					 }
 				 }		
 				 if(found)
@@ -395,14 +382,7 @@ public class BankApplication extends JFrame {
 					   
 					 if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						 found = true;
-						 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
-						 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
-						 fields.get("Surname").setText(entry.getValue().getSurname());
-						 fields.get("First Name").setText(entry.getValue().getFirstName());
-						 fields.get("Account Type").setText(entry.getValue().getAccountType());
-						 fields.get("Balance").setText(entry.getValue().getBalance()+"");
-						 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");						
-						 
+						 setTextFields(entry);					
 					 }			 
 				 }
 				 if(found)
@@ -511,6 +491,16 @@ public class BankApplication extends JFrame {
 		else
 			fields.get("Overdraft").setText("Only applies to current accs");
 	
+	}
+	
+	public void setTextFields(Entry<Integer, BankAccount> entry) {
+		 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
+		 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
+		 fields.get("Surname").setText(entry.getValue().getSurname());
+		 fields.get("First Name").setText(entry.getValue().getFirstName());
+		 fields.get("Account Type").setText(entry.getValue().getAccountType());
+		 fields.get("Balance").setText(entry.getValue().getBalance()+"");
+		 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
 	}
 	
 	private static RandomAccessFile input;
