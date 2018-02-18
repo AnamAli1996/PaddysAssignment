@@ -44,8 +44,8 @@ public class BankApplication extends JFrame {
 	JMenu navigateMenu, recordsMenu, transactionsMenu, fileMenu, exitMenu;
 	
 	Map<String, JMenuItem> navMenuItems = new HashMap<String, JMenuItem>();
+	Map<String, JMenuItem> recordsMenuItems = new HashMap<String, JMenuItem>();
 	
-	JMenuItem createItem, modifyItem, deleteItem, setOverdraft, setInterest;
 	JMenuItem deposit, withdraw, calcInterest;
 	JMenuItem open, save, saveAs;
 	JMenuItem closeApp;
@@ -102,32 +102,24 @@ public class BankApplication extends JFrame {
 		add(buttonPanel, BorderLayout.SOUTH);
 		
 		menuBar = new JMenuBar();
-    	setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		
 		navigateMenu = new JMenu("Navigate");
     	
-		ArrayList<String> menuItems = new ArrayList<String>(
+		ArrayList<String> navMenuLabels = new ArrayList<String>(
 				Arrays.asList("Next Item", "Previous Item", "First Item", "Last Item", 
 						"Find By Account Number", "Find By Surname", "List All Records"));
-		setMenuItems(navMenuItems, navigateMenu, menuItems);
+		setMenuItems(navMenuItems, navigateMenu, navMenuLabels);
     	
-    	menuBar.add(navigateMenu);
+    		menuBar.add(navigateMenu);
     	
-    	recordsMenu = new JMenu("Records");
+    		recordsMenu = new JMenu("Records");
     	
-    	createItem = new JMenuItem("Create Item");
-    	modifyItem = new JMenuItem("Modify Item");
-    	deleteItem = new JMenuItem("Delete Item");
-    	setOverdraft = new JMenuItem("Set Overdraft");
-    	setInterest = new JMenuItem("Set Interest");
+    		ArrayList<String> recMenuLabels = new ArrayList<String>(
+    			Arrays.asList("Create Item", "Modify Item", "Delete Item", "Set Overdraft", "Set Interest"));
+    		setMenuItems(recordsMenuItems, recordsMenu, recMenuLabels);
     	
-    	recordsMenu.add(createItem);
-    	recordsMenu.add(modifyItem);
-    	recordsMenu.add(deleteItem);
-    	recordsMenu.add(setOverdraft);
-    	recordsMenu.add(setInterest);
-    	
-    	menuBar.add(recordsMenu);
+    		menuBar.add(recordsMenu);
     	
     	transactionsMenu = new JMenu("Transactions");
     	
@@ -163,7 +155,7 @@ public class BankApplication extends JFrame {
     	
     	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	
-		setOverdraft.addActionListener(new ActionListener(){
+		recordsMenuItems.get("Set Overdraft").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(table.get(currentItem).getAccountType().trim().equals("Current")){
 					String newOverdraftStr = JOptionPane.showInputDialog(null, "Enter new Overdraft", JOptionPane.OK_CANCEL_OPTION);
@@ -285,7 +277,11 @@ public class BankApplication extends JFrame {
 		lastItemButton.addActionListener(last);
 		navMenuItems.get("Last Item").addActionListener(last);
 		
-		deleteItem.addActionListener(new ActionListener(){
+		
+		
+		
+		
+		recordsMenuItems.get("Delete Item").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 						
 							table.remove(currentItem);
@@ -301,14 +297,14 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		createItem.addActionListener(new ActionListener(){
+		recordsMenuItems.get("Create Item").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				new CreateBankDialog(table);		
 			}
 		});
 		
 		
-		modifyItem.addActionListener(new ActionListener(){
+		recordsMenuItems.get("Modify Item").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				fields.get("Surname").setEditable(true);
 				fields.get("First Name").setEditable(true);
@@ -317,7 +313,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		setInterest.addActionListener(new ActionListener(){
+		recordsMenuItems.get("Set Interest").addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
 				 String interestRateStr = JOptionPane.showInputDialog("Enter Interest Rate: (do not type the % sign)");
@@ -521,10 +517,10 @@ public class BankApplication extends JFrame {
 		});		
 	}
 	
-	private void setMenuItems(Map<String, JMenuItem> menuList, JMenu menu, ArrayList<String> menuItems) {
+	private void setMenuItems(Map<String, JMenuItem> itemMap, JMenu menu, ArrayList<String> menuItems) {
 		menuItems.forEach(item -> {
-			menuList.put(item, new JMenuItem(item));
-			menu.add(navMenuItems.get(item));
+			itemMap.put(item, new JMenuItem(item));
+			menu.add(itemMap.get(item));
 		});
 	}
 	
