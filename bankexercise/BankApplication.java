@@ -38,8 +38,6 @@ public class BankApplication extends JFrame {
 	ArrayList<BankAccount> accountList = new ArrayList<BankAccount>();
 	static HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	private final static int TABLE_SIZE = 29;
-	static private final String newline = "\n";
-	
 	JMenuBar menuBar;
 	JMenu navigateMenu, recordsMenu, transactionsMenu, fileMenu, exitMenu;
 	Map<String, JMenu> menuBarItems = new HashMap<String, JMenu>();
@@ -47,28 +45,19 @@ public class BankApplication extends JFrame {
 	Map<String, JMenuItem> recordsMenuItems = new HashMap<String, JMenuItem>();
 	Map<String, JMenuItem> tranMenuItems = new HashMap<String, JMenuItem>();
 	Map<String, JMenuItem> fileMenuItems = new HashMap<String, JMenuItem>();
-	
 	JMenuItem closeApp;
 	JButton firstItemButton, lastItemButton, nextItemButton, prevItemButton;
-	
 	String[] uiComp = {"Account ID", "Account Number", "First Name", "Surname", "Account Type", "Balance", "Overdraft"};
 	Map<String, JLabel> labels = new HashMap<String, JLabel>();
 	Map<String, JTextField> fields = new HashMap<String, JTextField>();
-	
 	static JFileChooser fc;
 	JTable jTable;
 	double interestRate;
-	
 	int currentItem = 0;
-	
-	
 	boolean openValues;
 	
 	public BankApplication() {
-		
 		super("Bank Application");
-		
-		int currentItem;
 		initComponents();
 	}
 	
@@ -170,20 +159,6 @@ public class BankApplication extends JFrame {
 			}
 		};
 		
-		ActionListener next = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				saveOpenValues();
-				// No next if at end of list.
-				if (currentItem != (table.size()-1)) {
-					// Move to next item.
-						currentItem++;
-					while(!table.containsKey(currentItem) ){
-						currentItem++;
-					}
-					displayDetails(currentItem);			
-				}				
-			}
-		};
 		
 		ActionListener next1 = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
