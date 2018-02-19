@@ -38,7 +38,6 @@ public class BankApplication extends JFrame {
 	static HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	private final static int TABLE_SIZE = 29;
 	static private final String newline = "\n";
-	
 	JMenuBar menuBar;
 	JMenu navigateMenu, recordsMenu, transactionsMenu, fileMenu, exitMenu;
 	JMenuItem nextItem, prevItem, firstItem, lastItem, findByAccount, findBySurname, listAll;
@@ -46,20 +45,18 @@ public class BankApplication extends JFrame {
 	JMenuItem deposit, withdraw, calcInterest;
 	JMenuItem open, save, saveAs;
 	JMenuItem closeApp;
-	JButton firstItemButton, lastItemButton, nextItemButton, prevItemButton;
-	
+	private String[] imageNames = {"first.png", "prev.png", "next.png", "last.png" };
+	private JButton[] itemButtons = new JButton[imageNames.length];
 	String[] uiComp = {"Account ID", "Account Number", "First Name", "Surname", "Account Type", "Balance", "Overdraft"};
 	Map<String, JLabel> labels = new HashMap<String, JLabel>();
 	Map<String, JTextField> fields = new HashMap<String, JTextField>();
-	
 	static JFileChooser fc;
 	JTable jTable;
 	double interestRate;
 	int currentItem = 0;
 	boolean openValues;
 	
-	public BankApplication() {
-		
+	public BankApplication() {	
 		super("Bank Application");
 		initComponents();
 	}
@@ -81,16 +78,11 @@ public class BankApplication extends JFrame {
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
 
-		nextItemButton = new JButton(new ImageIcon("next.png"));
-		prevItemButton = new JButton(new ImageIcon("prev.png"));
-		firstItemButton = new JButton(new ImageIcon("first.png"));
-		lastItemButton = new JButton(new ImageIcon("last.png"));
-		
-		buttonPanel.add(firstItemButton);
-		buttonPanel.add(prevItemButton);
-		buttonPanel.add(nextItemButton);
-		buttonPanel.add(lastItemButton);
-		
+		for(int i = 0; i < imageNames.length; i++) {
+			itemButtons[i] = new JButton(new ImageIcon(imageNames[i]));
+			buttonPanel.add(itemButtons[i]);
+			
+		}
 		add(buttonPanel, BorderLayout.SOUTH);
 		
 		menuBar = new JMenuBar();
@@ -276,17 +268,18 @@ public class BankApplication extends JFrame {
 			}
 		};
 		
-		nextItemButton.addActionListener(next1);
+		itemButtons[2].addActionListener(next1);
 		nextItem.addActionListener(next1);
 		
-		prevItemButton.addActionListener(prev);
+		itemButtons[1].addActionListener(prev);
 		prevItem.addActionListener(prev);
 
-		firstItemButton.addActionListener(first);
+		itemButtons[0].addActionListener(first);
 		firstItem.addActionListener(first);
 
-		lastItemButton.addActionListener(last);
+		itemButtons[3].addActionListener(last);
 		lastItem.addActionListener(last);
+		
 		
 		deleteItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
