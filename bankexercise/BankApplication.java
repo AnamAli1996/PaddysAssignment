@@ -75,18 +75,16 @@ public class BankApplication extends JFrame {
 		}
 		
 		add(displayPanel, BorderLayout.CENTER);
-		
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
-
 		for(int i = 0; i < imageNames.length; i++) {
 			itemButtons[i] = new JButton(new ImageIcon(imageNames[i]));
 			buttonPanel.add(itemButtons[i]);
-			
 		}
+		
 		add(buttonPanel, BorderLayout.SOUTH);
 		
 		menuBar = new JMenuBar();
-    	setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		
 		navigateMenu = new JMenu("Navigate");
     	
