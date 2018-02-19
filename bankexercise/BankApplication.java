@@ -1,4 +1,5 @@
 package bankexercise;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,12 +10,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
 import net.miginfocom.swing.MigLayout;
 
 public class BankApplication extends JFrame {
@@ -36,26 +37,35 @@ public class BankApplication extends JFrame {
 	ArrayList<BankAccount> accountList = new ArrayList<BankAccount>();
 	static HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	private final static int TABLE_SIZE = 29;
+	static private final String newline = "\n";
+	
 	JMenuBar menuBar;
 	JMenu navigateMenu, recordsMenu, transactionsMenu, fileMenu, exitMenu;
-	Map<String, JMenu> menuBarItems = new HashMap<String, JMenu>();
-	Map<String, JMenuItem> navMenuItems = new HashMap<String, JMenuItem>();
-	Map<String, JMenuItem> recordsMenuItems = new HashMap<String, JMenuItem>();
-	Map<String, JMenuItem> tranMenuItems = new HashMap<String, JMenuItem>();
-	Map<String, JMenuItem> fileMenuItems = new HashMap<String, JMenuItem>();
+	JMenuItem nextItem, prevItem, firstItem, lastItem, findByAccount, findBySurname, listAll;
+	JMenuItem createItem, modifyItem, deleteItem, setOverdraft, setInterest;
+	JMenuItem deposit, withdraw, calcInterest;
+	JMenuItem open, save, saveAs;
 	JMenuItem closeApp;
 	JButton firstItemButton, lastItemButton, nextItemButton, prevItemButton;
+	
 	String[] uiComp = {"Account ID", "Account Number", "First Name", "Surname", "Account Type", "Balance", "Overdraft"};
 	Map<String, JLabel> labels = new HashMap<String, JLabel>();
 	Map<String, JTextField> fields = new HashMap<String, JTextField>();
+	
 	static JFileChooser fc;
 	JTable jTable;
 	double interestRate;
+	
 	int currentItem = 0;
+	
+	
 	boolean openValues;
 	
 	public BankApplication() {
+		
 		super("Bank Application");
+		
+		int currentItem;
 		initComponents();
 	}
 	
@@ -89,49 +99,79 @@ public class BankApplication extends JFrame {
 		add(buttonPanel, BorderLayout.SOUTH);
 		
 		menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
+    	setJMenuBar(menuBar);
 		
 		navigateMenu = new JMenu("Navigate");
     	
-		ArrayList<String> navMenuLabels = new ArrayList<String>(
-				Arrays.asList("Next Item", "Previous Item", "First Item", "Last Item", 
-						"Find By Account Number", "Find By Surname", "List All Records"));
-		setMenuItems(navMenuItems, navigateMenu, navMenuLabels);
+    	nextItem = new JMenuItem("Next Item");
+    	prevItem = new JMenuItem("Previous Item");
+    	firstItem = new JMenuItem("First Item");
+    	lastItem = new JMenuItem("Last Item");
+    	findByAccount = new JMenuItem("Find by Account Number");
+    	findBySurname = new JMenuItem("Find by Surname");
+    	listAll = new JMenuItem("List All Records");
     	
-    		menuBar.add(navigateMenu);
- 
-    		
-    		recordsMenu = new JMenu("Records");
+    	navigateMenu.add(nextItem);
+    	navigateMenu.add(prevItem);
+    	navigateMenu.add(firstItem);
+    	navigateMenu.add(lastItem);
+    	navigateMenu.add(findByAccount);
+    	navigateMenu.add(findBySurname);
+    	navigateMenu.add(listAll);
     	
-    		ArrayList<String> recMenuLabels = new ArrayList<String>(
-    			Arrays.asList("Create Item", "Modify Item", "Delete Item", "Set Overdraft", "Set Interest"));
-    		setMenuItems(recordsMenuItems, recordsMenu, recMenuLabels);
-    		menuBar.add(recordsMenu);
-    		
-    		transactionsMenu = new JMenu("Transactions");
-    		ArrayList<String> tranMenuLabels = new ArrayList<String>(Arrays.asList("Deposit", "Withdraw", "Calculate Interest"));
-	    	setMenuItems(tranMenuItems, transactionsMenu, tranMenuLabels);
+    	menuBar.add(navigateMenu);
     	
-	    	menuBar.add(transactionsMenu);
+    	recordsMenu = new JMenu("Records");
     	
-	    	fileMenu = new JMenu("File");
+    	createItem = new JMenuItem("Create Item");
+    	modifyItem = new JMenuItem("Modify Item");
+    	deleteItem = new JMenuItem("Delete Item");
+    	setOverdraft = new JMenuItem("Set Overdraft");
+    	setInterest = new JMenuItem("Set Interest");
     	
-	    	ArrayList<String> fileMenuLabels = new ArrayList<String>(Arrays.asList("Open File", "Save File", "Save As"));
-	    	setMenuItems(fileMenuItems, fileMenu, fileMenuLabels);
+    	recordsMenu.add(createItem);
+    	recordsMenu.add(modifyItem);
+    	recordsMenu.add(deleteItem);
+    	recordsMenu.add(setOverdraft);
+    	recordsMenu.add(setInterest);
     	
-	    	menuBar.add(fileMenu);
+    	menuBar.add(recordsMenu);
     	
-	    	exitMenu = new JMenu("Exit");
-	    	
-	    	closeApp = new JMenuItem("Close Application");
-	    	
-	    	exitMenu.add(closeApp);
-	    	
-	    	menuBar.add(exitMenu);
-	    	
-	    	setDefaultCloseOperation(EXIT_ON_CLOSE);
+    	transactionsMenu = new JMenu("Transactions");
+    	
+    	deposit = new JMenuItem("Deposit");
+    	withdraw = new JMenuItem("Withdraw");
+    	calcInterest = new JMenuItem("Calculate Interest");
+    	
+    	transactionsMenu.add(deposit);
+    	transactionsMenu.add(withdraw);
+    	transactionsMenu.add(calcInterest);
+    	
+    	menuBar.add(transactionsMenu);
+    	
+    	fileMenu = new JMenu("File");
+    	
+    	open = new JMenuItem("Open File");
+    	save = new JMenuItem("Save File");
+    	saveAs = new JMenuItem("Save As");
+    	
+    	fileMenu.add(open);
+    	fileMenu.add(save);
+    	fileMenu.add(saveAs);
+    	
+    	menuBar.add(fileMenu);
+    	
+    	exitMenu = new JMenu("Exit");
+    	
+    	closeApp = new JMenuItem("Close Application");
+    	
+    	exitMenu.add(closeApp);
+    	
+    	menuBar.add(exitMenu);
+    	
+    	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	
-		recordsMenuItems.get("Set Overdraft").addActionListener(new ActionListener(){
+		setOverdraft.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(table.get(currentItem).getAccountType().trim().equals("Current")){
 					String newOverdraftStr = JOptionPane.showInputDialog(null, "Enter new Overdraft", JOptionPane.OK_CANCEL_OPTION);
@@ -145,8 +185,10 @@ public class BankApplication extends JFrame {
 		});
 	
 		ActionListener first = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
+			public void actionPerformed(ActionEvent e) {
+				
 				saveOpenValues();
+				
 				currentItem=0;
 				while(!table.containsKey(currentItem)){
 					currentItem++;
@@ -155,11 +197,37 @@ public class BankApplication extends JFrame {
 			}
 		};
 		
-		
-		ActionListener next = new ActionListener(){
-			public void actionPerformed(ActionEvent e){
+		ActionListener next = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
-				int maxKey = Collections.max(addArray());
+				// No next if at end of list.
+				if (currentItem != (table.size()-1)) {
+					// Move to next item.
+						currentItem++;
+					while(!table.containsKey(currentItem) ){
+						currentItem++;
+					}
+					displayDetails(currentItem);			
+				}				
+			}
+		};
+		
+		ActionListener next1 = new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				
+				ArrayList<Integer> keyList = new ArrayList<Integer>();
+				int i=0;
+		
+				while(i<TABLE_SIZE){
+					i++;
+					if(table.containsKey(i))
+						keyList.add(i);
+				}
+				
+				int maxKey = Collections.max(keyList);
+		
+				saveOpenValues();	
+		
 					if(currentItem<maxKey){
 						currentItem++;
 						while(!table.containsKey(currentItem)){
@@ -174,11 +242,23 @@ public class BankApplication extends JFrame {
 
 		ActionListener prev = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				saveOpenValues();
-				int minKey = Collections.min(addArray());
+				
+				ArrayList<Integer> keyList = new ArrayList<Integer>();
+				int i=0;
+		
+				while(i<TABLE_SIZE){
+					i++;
+					if(table.containsKey(i))
+						keyList.add(i);
+				}
+				
+				int minKey = Collections.min(keyList);
+				//System.out.println(minKey);
+				
 				if(currentItem>minKey){
 					currentItem--;
 					while(!table.containsKey(currentItem)){
+						//System.out.println("Current: " + currentItem + ", min key: " + minKey);
 						currentItem--;
 					}
 				}
@@ -189,31 +269,31 @@ public class BankApplication extends JFrame {
 		ActionListener last = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
+				
 				currentItem =29;
+								
 				while(!table.containsKey(currentItem)){
 					currentItem--;
+					
 				}
+				
 				displayDetails(currentItem);
 			}
 		};
 		
-		nextItemButton.addActionListener(next);
-		navMenuItems.get("Next Item").addActionListener(next);
+		nextItemButton.addActionListener(next1);
+		nextItem.addActionListener(next1);
 		
 		prevItemButton.addActionListener(prev);
-		navMenuItems.get("Previous Item").addActionListener(prev);
+		prevItem.addActionListener(prev);
 
 		firstItemButton.addActionListener(first);
-		navMenuItems.get("First Item").addActionListener(first);
+		firstItem.addActionListener(first);
 
 		lastItemButton.addActionListener(last);
-		navMenuItems.get("Last Item").addActionListener(last);
+		lastItem.addActionListener(last);
 		
-		
-		
-		
-		
-		recordsMenuItems.get("Delete Item").addActionListener(new ActionListener(){
+		deleteItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 						
 							table.remove(currentItem);
@@ -229,22 +309,23 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		recordsMenuItems.get("Create Item").addActionListener(new ActionListener(){
+		createItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				new CreateBankDialog(table);		
 			}
 		});
 		
 		
-		recordsMenuItems.get("Modify Item").addActionListener(new ActionListener(){
+		modifyItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				fields.get("Surname").setEditable(true);
 				fields.get("First Name").setEditable(true);
+				
 				openValues = true;
 			}
 		});
 		
-		recordsMenuItems.get("Set Interest").addActionListener(new ActionListener(){
+		setInterest.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
 				 String interestRateStr = JOptionPane.showInputDialog("Enter Interest Rate: (do not type the % sign)");
@@ -254,7 +335,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		navMenuItems.get("List All Records").addActionListener(new ActionListener(){
+		listAll.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 		
 				JFrame frame = new JFrame("TableDemo");
@@ -285,7 +366,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		fileMenuItems.get("Open File").addActionListener(new ActionListener(){
+		open.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				readFile();
 				currentItem=0;
@@ -296,13 +377,13 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		fileMenuItems.get("Save File").addActionListener(new ActionListener(){
+		save.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				writeFile();
 			}
 		});
 		
-		fileMenuItems.get("Save As").addActionListener(new ActionListener(){
+		saveAs.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveFileAs();
 			}
@@ -326,7 +407,7 @@ public class BankApplication extends JFrame {
 			}
 		});	
 		
-		navMenuItems.get("Find By Surname").addActionListener(new ActionListener(){
+		findBySurname.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
 				String sName = JOptionPane.showInputDialog("Search for surname: ");
@@ -336,7 +417,13 @@ public class BankApplication extends JFrame {
 					   
 					 if(sName.equalsIgnoreCase((entry.getValue().getSurname().trim()))){
 						 found = true;
-						 setTextFields(entry);
+						 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
+						 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
+						 fields.get("Surname").setText(entry.getValue().getSurname());
+						 fields.get("First Name").setText(entry.getValue().getFirstName());
+						 fields.get("Account Type").setText(entry.getValue().getAccountType());
+						 fields.get("Balance").setText(entry.getValue().getBalance()+"");
+						 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
 					 }
 				 }		
 				 if(found)
@@ -346,7 +433,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		navMenuItems.get("Find By Account Number").addActionListener(new ActionListener(){
+		findByAccount.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
 				String accNum = JOptionPane.showInputDialog("Search for account number: ");
@@ -356,7 +443,14 @@ public class BankApplication extends JFrame {
 					   
 					 if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						 found = true;
-						 setTextFields(entry);					
+						 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
+						 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
+						 fields.get("Surname").setText(entry.getValue().getSurname());
+						 fields.get("First Name").setText(entry.getValue().getFirstName());
+						 fields.get("Account Type").setText(entry.getValue().getAccountType());
+						 fields.get("Balance").setText(entry.getValue().getBalance()+"");
+						 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");						
+						 
 					 }			 
 				 }
 				 if(found)
@@ -367,7 +461,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		tranMenuItems.get("Deposit").addActionListener(new ActionListener(){
+		deposit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String accNum = JOptionPane.showInputDialog("Account number to deposit into: ");
 				boolean found = false;
@@ -386,7 +480,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		tranMenuItems.get("Withdraw").addActionListener(new ActionListener(){
+		withdraw.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String accNum = JOptionPane.showInputDialog("Account number to withdraw from: ");
 				String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
@@ -420,7 +514,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
-		tranMenuItems.get("Calculate Interest").addActionListener(new ActionListener(){
+		calcInterest.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 					if(entry.getValue().getAccountType().equals("Deposit")){
@@ -433,22 +527,6 @@ public class BankApplication extends JFrame {
 				}
 			}
 		});		
-	}
-	
-	private void setMenuItems(Map<String, JMenuItem> itemMap, JMenu menu, ArrayList<String> menuItems) {
-		menuItems.forEach(item -> {
-			itemMap.put(item, new JMenuItem(item));
-			menu.add(itemMap.get(item));
-		});
-	}
-	
-	private ArrayList<Integer> addArray() {
-		ArrayList<Integer> keyList = new ArrayList<Integer>();	
-		for(int i = 0; i<TABLE_SIZE; i++){
-			if(table.containsKey(i))
-				keyList.add(i);
-		}
-		return keyList;
 	}
 	
 	public void saveOpenValues(){		
@@ -474,16 +552,6 @@ public class BankApplication extends JFrame {
 		else
 			fields.get("Overdraft").setText("Only applies to current accs");
 	
-	}
-	
-	public void setTextFields(Entry<Integer, BankAccount> entry) {
-		 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
-		 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
-		 fields.get("Surname").setText(entry.getValue().getSurname());
-		 fields.get("First Name").setText(entry.getValue().getFirstName());
-		 fields.get("Account Type").setText(entry.getValue().getAccountType());
-		 fields.get("Balance").setText(entry.getValue().getBalance()+"");
-		 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
 	}
 	
 	private static RandomAccessFile input;
@@ -701,3 +769,70 @@ public static void saveToFile(){
 	
 	
 }
+
+
+
+
+/*
+The task for your second assignment is to construct a system that will allow users to define a data structure representing a collection of records that can be displayed both by means of a dialog that can be scrolled through and by means of a table to give an overall view of the collection contents. 
+The user should be able to carry out tasks such as adding records to the collection, modifying the contents of records, and deleting records from the collection, as well as being able to save and retrieve the contents of the collection to and from external random access files.
+The records in the collection will represent bank account records with the following fields:
+
+AccountID (this will be an integer unique to a particular account and 
+will be automatically generated when a new account record is created)
+
+AccountNumber (this will be a string of eight digits and should also 
+be unique - you will need to check for this when creating a new record)
+
+Surname (this will be a string of length 20)
+
+FirstName (this will be a string of length 20)
+
+AccountType (this will have two possible options - "Current " and 
+"Deposit" - and again will be selected from a drop down list when 
+entering a record)
+
+Balance (this will a real number which will be initialised to 0.0 
+and can be increased or decreased by means of transactions)
+
+Overdraft (this will be a real number which will be initialised 
+to 0.0 but can be updated by means of a dialog - it only applies 
+to current accounts)
+
+You may consider whether you might need more than one class to deal with bank accounts.
+The system should be menu-driven, with the following menu options:
+
+Navigate: First, Last, Next, Previous, Find By Account Number 
+(allows you to find a record by account number entered via a 
+dialog box), Find By Surname (allows you to find a record by 
+surname entered via a dialog box),List All (displays the 
+contents of the collection as a dialog containing a JTable)
+
+Records: Create, Modify, Delete, Set Overdraft (this should 
+use a dialog to allow you to set or update the overdraft for 
+a current account), Set Interest Rate (this should allow you 
+to set the interest rate for deposit accounts by means of a 
+dialog)
+
+Transactions: Deposit, Withdraw (these should use dialogs which
+allow you to specify an account number and the amount to withdraw
+or deposit, and should check that a withdrawal would not cause
+the overdraft limit for a current account to be exceeded, or be 
+greater than the balance in a deposit account, before the balance 
+is updated), Calculate Interest (this calculates the interest rate 
+for all deposit accounts and updates the balances)
+
+File: Open, Save, Save As (these should use JFileChooser dialogs. 
+The random access file should be able to hold 25 records. The position 
+in which a record is stored and retrieved will be determined by its account 
+number by means of a hashing procedure, with a standard method being used when 
+dealing with possible hash collisions)
+
+Exit Application (this should make sure that the collection is saved - or that 
+the user is given the opportunity to save the collection - before the application closes)
+
+When presenting the results in a JTable for the List All option, the records should be sortable on all fields, but not editable (changing the records or adding and deleting records can only be done through the main dialog).
+For all menu options in your program, you should perform whatever validation, error-checking and exception-handling you consider to be necessary.
+The programs Person.java and PersonApplication.java (from OOSD2) and TableDemo.java may be of use to you in constructing your interfaces. The set of Java programs used to create, edit and modify random access files will also provide you with a basis for your submission.
+
+*/
