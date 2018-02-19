@@ -1,5 +1,4 @@
 package bankexercise;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -16,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -31,7 +29,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
 import net.miginfocom.swing.MigLayout;
 
 public class BankApplication extends JFrame {
@@ -161,15 +158,8 @@ public class BankApplication extends JFrame {
 		
 		ActionListener next = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				ArrayList<Integer> keyList = new ArrayList<Integer>();
-				int i=0;
-				while(i<TABLE_SIZE){
-					i++;
-					if(table.containsKey(i))
-						keyList.add(i);
-				}
-				int maxKey = Collections.max(keyList);
-				saveOpenValues();	
+				saveOpenValues();
+				int maxKey = Collections.max(addArray());
 					if(currentItem<maxKey){
 						currentItem++;
 						while(!table.containsKey(currentItem)){
@@ -184,23 +174,11 @@ public class BankApplication extends JFrame {
 
 		ActionListener prev = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				ArrayList<Integer> keyList = new ArrayList<Integer>();
-				int i=0;
-		
-				while(i<TABLE_SIZE){
-					i++;
-					if(table.containsKey(i))
-						keyList.add(i);
-				}
-				
-				int minKey = Collections.min(keyList);
-				//System.out.println(minKey);
-				
+				saveOpenValues();
+				int minKey = Collections.min(addArray());
 				if(currentItem>minKey){
 					currentItem--;
 					while(!table.containsKey(currentItem)){
-						//System.out.println("Current: " + currentItem + ", min key: " + minKey);
 						currentItem--;
 					}
 				}
@@ -211,14 +189,10 @@ public class BankApplication extends JFrame {
 		ActionListener last = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
-				
 				currentItem =29;
-								
 				while(!table.containsKey(currentItem)){
 					currentItem--;
-					
 				}
-				
 				displayDetails(currentItem);
 			}
 		};
@@ -466,6 +440,15 @@ public class BankApplication extends JFrame {
 			itemMap.put(item, new JMenuItem(item));
 			menu.add(itemMap.get(item));
 		});
+	}
+	
+	private ArrayList<Integer> addArray() {
+		ArrayList<Integer> keyList = new ArrayList<Integer>();	
+		for(int i = 0; i<TABLE_SIZE; i++){
+			if(table.containsKey(i))
+				keyList.add(i);
+		}
+		return keyList;
 	}
 	
 	public void saveOpenValues(){		
