@@ -55,17 +55,12 @@ public class BankApplication extends JFrame {
 	static JFileChooser fc;
 	JTable jTable;
 	double interestRate;
-	
 	int currentItem = 0;
-	
-	
 	boolean openValues;
 	
 	public BankApplication() {
 		
 		super("Bank Application");
-		
-		int currentItem;
 		initComponents();
 	}
 	
