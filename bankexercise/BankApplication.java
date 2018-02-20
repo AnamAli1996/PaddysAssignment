@@ -164,21 +164,11 @@ public class BankApplication extends JFrame {
 		};
 		
 	
-		ActionListener next1 = new ActionListener(){
+		ActionListener next = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
-				ArrayList<Integer> keyList = new ArrayList<Integer>();
-				int i=0;
-		
-				while(i<TABLE_SIZE){
-					i++;
-					if(table.containsKey(i))
-						keyList.add(i);
-				}
-				
-				int maxKey = Collections.max(keyList);
-		
-				saveOpenValues();	
+				saveOpenValues();
+				int maxKey = Collections.max(addArray());	
 		
 					if(currentItem<maxKey){
 						currentItem++;
@@ -188,6 +178,8 @@ public class BankApplication extends JFrame {
 					}
 					displayDetails(currentItem);			
 			}
+
+			
 		};
 		
 		
@@ -195,22 +187,11 @@ public class BankApplication extends JFrame {
 		ActionListener prev = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				ArrayList<Integer> keyList = new ArrayList<Integer>();
-				int i=0;
-		
-				while(i<TABLE_SIZE){
-					i++;
-					if(table.containsKey(i))
-						keyList.add(i);
-				}
-				
-				int minKey = Collections.min(keyList);
-				//System.out.println(minKey);
-				
+				saveOpenValues();
+				int minKey = Collections.max(addArray());
 				if(currentItem>minKey){
 					currentItem--;
 					while(!table.containsKey(currentItem)){
-						//System.out.println("Current: " + currentItem + ", min key: " + minKey);
 						currentItem--;
 					}
 				}
@@ -218,6 +199,9 @@ public class BankApplication extends JFrame {
 			}
 		};
 	
+		
+		
+		
 		ActionListener last = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
@@ -233,8 +217,8 @@ public class BankApplication extends JFrame {
 			}
 		};
 		
-		itemButtons[2].addActionListener(next1);
-		nextItem.addActionListener(next1);
+		itemButtons[2].addActionListener(next);
+		nextItem.addActionListener(next);
 		
 		itemButtons[1].addActionListener(prev);
 		prevItem.addActionListener(prev);
@@ -433,6 +417,7 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
+		
 		withdraw.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String accNum = JOptionPane.showInputDialog("Account number to withdraw from: ");
@@ -467,6 +452,8 @@ public class BankApplication extends JFrame {
 			}
 		});
 		
+		
+		
 		calcInterest.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
@@ -491,6 +478,16 @@ public class BankApplication extends JFrame {
 			table.get(currentItem).setFirstName(fields.get("First Name").getText());
 		}
 	}	
+	
+	private ArrayList<Integer> addArray() {
+		ArrayList<Integer> keyList = new ArrayList<Integer>();	
+		for(int i = 0; i<TABLE_SIZE; i++){
+			if(table.containsKey(i))
+				keyList.add(i);
+		}
+	return keyList;
+}
+	
 	
 	public void displayDetails(int currentItem) {	
 				
