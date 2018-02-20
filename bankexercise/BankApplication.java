@@ -18,7 +18,6 @@ public class BankApplication extends JFrame {
 	ArrayList<BankAccount> accountList = new ArrayList<BankAccount>();
 	static HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	private final static int TABLE_SIZE = 29;
-	static private final String newline = "\n";
 	JMenuBar menuBar;
 	JMenu navigateMenu, recordsMenu, transactionsMenu, fileMenu, exitMenu;
 	JMenuItem nextItem, prevItem, firstItem, lastItem, findByAccount, findBySurname, listAll;
@@ -56,6 +55,7 @@ public class BankApplication extends JFrame {
 		}
 		
 		add(displayPanel, BorderLayout.CENTER);
+		
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
 		for(int i = 0; i < imageNames.length; i++) {
 			itemButtons[i] = new JButton(new ImageIcon(imageNames[i]));
@@ -68,7 +68,7 @@ public class BankApplication extends JFrame {
 		setJMenuBar(menuBar);
 		
 		navigateMenu = new JMenu("Navigate");
-    	
+
 	    	nextItem = new JMenuItem("Next Item");
 	    	prevItem = new JMenuItem("Previous Item");
 	    	firstItem = new JMenuItem("First Item");
@@ -163,21 +163,7 @@ public class BankApplication extends JFrame {
 			}
 		};
 		
-		ActionListener next = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				saveOpenValues();
-				// No next if at end of list.
-				if (currentItem != (table.size()-1)) {
-					// Move to next item.
-						currentItem++;
-					while(!table.containsKey(currentItem) ){
-						currentItem++;
-					}
-					displayDetails(currentItem);			
-				}				
-			}
-		};
-		
+	
 		ActionListener next1 = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
