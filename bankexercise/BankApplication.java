@@ -14,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class BankApplication extends JFrame {
-	
+
 	ArrayList<BankAccount> accountList = new ArrayList<BankAccount>();
 	static HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	private final static int TABLE_SIZE = 29;
@@ -35,35 +35,51 @@ public class BankApplication extends JFrame {
 	double interestRate;
 	int currentItem = 0;
 	boolean openValues;
-	
+
 	public BankApplication() {	
 		super("Bank Application");
 		initComponents();
 	}
-	
+
 	public void initComponents() {
 		setLayout(new BorderLayout());
-		JPanel displayPanel = new JPanel(new MigLayout());
-		
-		for (String str: uiComp) {
-			labels.put(str, new JLabel(str + ": "));
-			fields.put(str, new JTextField(15));
-			fields.get(str).setEditable(false);
-			
-			displayPanel.add(labels.get(str), "growx, pushx");
-			displayPanel.add(fields.get(str), "growx, pushx, wrap");
-		}
-		
-		add(displayPanel, BorderLayout.CENTER);
-		
+		createLabelsAndTextFields();
+		createButtons();
+		createMenus();
+		addActionListers();
+
+	}
+	
+	//Method for creating buttons
+	private void createButtons() {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
 		for(int i = 0; i < imageNames.length; i++) {
 			itemButtons[i] = new JButton(new ImageIcon(imageNames[i]));
 			buttonPanel.add(itemButtons[i]);
 		}
-		
+
 		add(buttonPanel, BorderLayout.SOUTH);
-		createMenus();
+	}
+	
+	//Method for creating labels and textfields
+	private void createLabelsAndTextFields() {
+		JPanel displayPanel = new JPanel(new MigLayout());
+
+		for (String str: uiComp) {
+			labels.put(str, new JLabel(str + ": "));
+			fields.put(str, new JTextField(15));
+			fields.get(str).setEditable(false);
+
+			displayPanel.add(labels.get(str), "growx, pushx");
+			displayPanel.add(fields.get(str), "growx, pushx, wrap");
+		}
+
+		add(displayPanel, BorderLayout.CENTER);
+
+	}
+	
+	//Method for adding ActionListeners
+	private void addActionListers() {
 		setOverdraft.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(table.get(currentItem).getAccountType().trim().equals("Current")){
@@ -73,10 +89,10 @@ public class BankApplication extends JFrame {
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Overdraft only applies to Current Accounts");
-			
+
 			}
 		});
-	
+
 		ActionListener first = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
@@ -87,23 +103,23 @@ public class BankApplication extends JFrame {
 				displayDetails(currentItem);
 			}
 		};
-		
-	
+
+
 		ActionListener next = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveOpenValues();
 				int maxKey = Collections.max(addArray());	
-					if(currentItem<maxKey){
+				if(currentItem<maxKey){
+					currentItem++;
+					while(!table.containsKey(currentItem)){
 						currentItem++;
-						while(!table.containsKey(currentItem)){
-							currentItem++;
-						}
 					}
-					displayDetails(currentItem);			
+				}
+				displayDetails(currentItem);			
 			}	
 		};
-		
-		
+
+
 
 		ActionListener prev = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -118,8 +134,8 @@ public class BankApplication extends JFrame {
 				displayDetails(currentItem);				
 			}
 		};
-	
-		
+
+
 		ActionListener last = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
@@ -127,14 +143,13 @@ public class BankApplication extends JFrame {
 				while(!table.containsKey(currentItem)){
 					currentItem--;	
 				}
-				
 				displayDetails(currentItem);
 			}
 		};
-		
+
 		itemButtons[2].addActionListener(next);
 		nextItem.addActionListener(next);
-		
+
 		itemButtons[1].addActionListener(prev);
 		prevItem.addActionListener(prev);
 
@@ -143,31 +158,31 @@ public class BankApplication extends JFrame {
 
 		itemButtons[3].addActionListener(last);
 		lastItem.addActionListener(last);
-		
-		
+
+
 		deleteItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-						
-							table.remove(currentItem);
-							JOptionPane.showMessageDialog(null, "Account Deleted");
-							
 
-							currentItem=0;
-							while(!table.containsKey(currentItem)){
-								currentItem++;
-							}
-							displayDetails(currentItem);
-							
+				table.remove(currentItem);
+				JOptionPane.showMessageDialog(null, "Account Deleted");
+
+
+				currentItem=0;
+				while(!table.containsKey(currentItem)){
+					currentItem++;
+				}
+				displayDetails(currentItem);
+
 			}
 		});
-		
+
 		createItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				new CreateBankDialog(table);		
 			}
 		});
-		
-		
+
+
 		modifyItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				fields.get("Surname").setEditable(true);
@@ -175,44 +190,44 @@ public class BankApplication extends JFrame {
 				openValues = true;
 			}
 		});
-		
+
 		setInterest.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-			interestRate = Double.parseDouble(JOptionPane.showInputDialog("Enter Interest Rate: (do not type the % sign)"));
+				interestRate = Double.parseDouble(JOptionPane.showInputDialog("Enter Interest Rate: (do not type the % sign)"));
 			}
 		});
-		
+
 		listAll.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-		
+
 				JFrame frame = new JFrame("TableDemo");
 				JPanel pan = new JPanel();
-			
-		        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				String col[] = {"ID","Number","Name", "Account Type", "Balance", "Overdraft"};
-				
+
 				DefaultTableModel tableModel = new DefaultTableModel(col, 0);
 				jTable = new JTable(tableModel);
 				JScrollPane scrollPane = new JScrollPane(jTable);
 				jTable.setAutoCreateRowSorter(true);
-				
-				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-				   
-				    
-				    Object[] objs = {entry.getValue().getAccountID(), entry.getValue().getAccountNumber(), 
-				    				entry.getValue().getFirstName().trim() + " " + entry.getValue().getSurname().trim(), 
-				    				entry.getValue().getAccountType(), entry.getValue().getBalance(), 
-				    				entry.getValue().getOverdraft()};
 
-				    tableModel.addRow(objs);
+				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
+
+
+					Object[] objs = {entry.getValue().getAccountID(), entry.getValue().getAccountNumber(), 
+							entry.getValue().getFirstName().trim() + " " + entry.getValue().getSurname().trim(), 
+							entry.getValue().getAccountType(), entry.getValue().getBalance(), 
+							entry.getValue().getOverdraft()};
+
+					tableModel.addRow(objs);
 				}
 				frame.setSize(600,500);
 				frame.add(scrollPane);
 				//frame.pack();
-		        frame.setVisible(true);			
+				frame.setVisible(true);			
 			}
 		});
-		
+
 		open.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				readFile();
@@ -223,22 +238,22 @@ public class BankApplication extends JFrame {
 				displayDetails(currentItem);
 			}
 		});
-		
+
 		save.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				writeFile();
 			}
 		});
-		
+
 		saveAs.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				saveFileAs();
 			}
 		});
-		
+
 		closeApp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				int answer = JOptionPane.showConfirmDialog(BankApplication.this, "Do you want to save before quitting?");
 				if (answer == JOptionPane.YES_OPTION) {
 					saveFileAs();
@@ -248,71 +263,71 @@ public class BankApplication extends JFrame {
 					dispose();
 				else if(answer==0)
 					;
-				
-				
-				
+
+
+
 			}
 		});	
-		
+
 		findBySurname.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+
 				String sName = JOptionPane.showInputDialog("Search for surname: ");
 				boolean found = false;
-				
-				 for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-					   
-					 if(sName.equalsIgnoreCase((entry.getValue().getSurname().trim()))){
-						 found = true;
-						 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
-						 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
-						 fields.get("Surname").setText(entry.getValue().getSurname());
-						 fields.get("First Name").setText(entry.getValue().getFirstName());
-						 fields.get("Account Type").setText(entry.getValue().getAccountType());
-						 fields.get("Balance").setText(entry.getValue().getBalance()+"");
-						 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
-					 }
-				 }		
-				 if(found)
-					 JOptionPane.showMessageDialog(null, "Surname  " + sName + " found.");
-				 else
-					 JOptionPane.showMessageDialog(null, "Surname " + sName + " not found.");
+
+				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
+
+					if(sName.equalsIgnoreCase((entry.getValue().getSurname().trim()))){
+						found = true;
+						fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
+						fields.get("Account Number").setText(entry.getValue().getAccountNumber());
+						fields.get("Surname").setText(entry.getValue().getSurname());
+						fields.get("First Name").setText(entry.getValue().getFirstName());
+						fields.get("Account Type").setText(entry.getValue().getAccountType());
+						fields.get("Balance").setText(entry.getValue().getBalance()+"");
+						fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
+					}
+				}		
+				if(found)
+					JOptionPane.showMessageDialog(null, "Surname  " + sName + " found.");
+				else
+					JOptionPane.showMessageDialog(null, "Surname " + sName + " not found.");
 			}
 		});
-		
+
 		findByAccount.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
+
 				String accNum = JOptionPane.showInputDialog("Search for account number: ");
 				boolean found = false;
-			
-				 for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-					   
-					 if(accNum.equals(entry.getValue().getAccountNumber().trim())){
-						 found = true;
-						 fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
-						 fields.get("Account Number").setText(entry.getValue().getAccountNumber());
-						 fields.get("Surname").setText(entry.getValue().getSurname());
-						 fields.get("First Name").setText(entry.getValue().getFirstName());
-						 fields.get("Account Type").setText(entry.getValue().getAccountType());
-						 fields.get("Balance").setText(entry.getValue().getBalance()+"");
-						 fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");						
-						 
-					 }			 
-				 }
-				 if(found)
-					 JOptionPane.showMessageDialog(null, "Account number " + accNum + " found.");
-				 else
-					 JOptionPane.showMessageDialog(null, "Account number " + accNum + " not found.");
-				
+
+				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
+
+					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
+						found = true;
+						fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
+						fields.get("Account Number").setText(entry.getValue().getAccountNumber());
+						fields.get("Surname").setText(entry.getValue().getSurname());
+						fields.get("First Name").setText(entry.getValue().getFirstName());
+						fields.get("Account Type").setText(entry.getValue().getAccountType());
+						fields.get("Balance").setText(entry.getValue().getBalance()+"");
+						fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");						
+
+					}			 
+				}
+				if(found)
+					JOptionPane.showMessageDialog(null, "Account number " + accNum + " found.");
+				else
+					JOptionPane.showMessageDialog(null, "Account number " + accNum + " not found.");
+
 			}
 		});
-		
+
 		deposit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String accNum = JOptionPane.showInputDialog("Account number to deposit into: ");
 				boolean found = false;
-				
+
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						found = true;
@@ -326,21 +341,21 @@ public class BankApplication extends JFrame {
 					JOptionPane.showMessageDialog(null, "Account number " + accNum + " not found.");
 			}
 		});
-		
-		
+
+
 		withdraw.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				String accNum = JOptionPane.showInputDialog("Account number to withdraw from: ");
 				String toWithdraw = JOptionPane.showInputDialog("Account found, Enter Amount to Withdraw: ");
 				boolean found;
-				
+
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-					
+
 
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
-						
+
 						found = true;
-						
+
 						if(entry.getValue().getAccountType().trim().equals("Current")){
 							if(Double.parseDouble(toWithdraw) > entry.getValue().getBalance() + entry.getValue().getOverdraft())
 								JOptionPane.showMessageDialog(null, "Transaction exceeds overdraft limit");
@@ -361,9 +376,9 @@ public class BankApplication extends JFrame {
 				}
 			}
 		});
-		
-		
-		
+
+
+
 		calcInterest.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
@@ -377,105 +392,106 @@ public class BankApplication extends JFrame {
 				}
 			}
 		});		
+
 	}
-	
+
 	public void saveOpenValues(){		
 		if (openValues){
 			fields.get("Surname").setEditable(false);
 			fields.get("First Name").setEditable(false);
-				
+
 			table.get(currentItem).setSurname(fields.get("Surname").getText());
 			table.get(currentItem).setFirstName(fields.get("First Name").getText());
 		}
 	}	
-	
+
 	private void createMenus() {
 		menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		navigateMenu = new JMenu("Navigate");
 
-	    	nextItem = new JMenuItem("Next Item");
-	    	prevItem = new JMenuItem("Previous Item");
-	    	firstItem = new JMenuItem("First Item");
-	    	lastItem = new JMenuItem("Last Item");
-	    	findByAccount = new JMenuItem("Find by Account Number");
-	    	findBySurname = new JMenuItem("Find by Surname");
-	    	listAll = new JMenuItem("List All Records");
-	    	
-	    	navigateMenu.add(nextItem);
-	    	navigateMenu.add(prevItem);
-	    	navigateMenu.add(firstItem);
-	    	navigateMenu.add(lastItem);
-	    	navigateMenu.add(findByAccount);
-	    	navigateMenu.add(findBySurname);
-	    	navigateMenu.add(listAll);
-	    	
-	    	menuBar.add(navigateMenu);
-	    	
-	    	recordsMenu = new JMenu("Records");
-	    	
-	    	createItem = new JMenuItem("Create Item");
-	    	modifyItem = new JMenuItem("Modify Item");
-	    	deleteItem = new JMenuItem("Delete Item");
-	    	setOverdraft = new JMenuItem("Set Overdraft");
-	    	setInterest = new JMenuItem("Set Interest");
-	    	
-	    	recordsMenu.add(createItem);
-	    	recordsMenu.add(modifyItem);
-	    	recordsMenu.add(deleteItem);
-	    	recordsMenu.add(setOverdraft);
-	    	recordsMenu.add(setInterest);
-	    	
-	    	menuBar.add(recordsMenu);
-	    	
-	    	transactionsMenu = new JMenu("Transactions");
-	    	
-	    	deposit = new JMenuItem("Deposit");
-	    	withdraw = new JMenuItem("Withdraw");
-	    	calcInterest = new JMenuItem("Calculate Interest");
-	    	
-	    	transactionsMenu.add(deposit);
-	    	transactionsMenu.add(withdraw);
-	    	transactionsMenu.add(calcInterest);
-	    	
-	    	menuBar.add(transactionsMenu);
-	    	
-	    	fileMenu = new JMenu("File");
-	    	
-	    	open = new JMenuItem("Open File");
-	    	save = new JMenuItem("Save File");
-	    	saveAs = new JMenuItem("Save As");
-	    	
-	    	fileMenu.add(open);
-	    	fileMenu.add(save);
-	    	fileMenu.add(saveAs);
-	    	
-	    	menuBar.add(fileMenu);
-	    	
-	    	exitMenu = new JMenu("Exit");
-	    	
-	    	closeApp = new JMenuItem("Close Application");
-	    	
-	    	exitMenu.add(closeApp);
-	    	
-	    	menuBar.add(exitMenu);
-	    	
-	    	setDefaultCloseOperation(EXIT_ON_CLOSE);
+		nextItem = new JMenuItem("Next Item");
+		prevItem = new JMenuItem("Previous Item");
+		firstItem = new JMenuItem("First Item");
+		lastItem = new JMenuItem("Last Item");
+		findByAccount = new JMenuItem("Find by Account Number");
+		findBySurname = new JMenuItem("Find by Surname");
+		listAll = new JMenuItem("List All Records");
+
+		navigateMenu.add(nextItem);
+		navigateMenu.add(prevItem);
+		navigateMenu.add(firstItem);
+		navigateMenu.add(lastItem);
+		navigateMenu.add(findByAccount);
+		navigateMenu.add(findBySurname);
+		navigateMenu.add(listAll);
+
+		menuBar.add(navigateMenu);
+
+		recordsMenu = new JMenu("Records");
+
+		createItem = new JMenuItem("Create Item");
+		modifyItem = new JMenuItem("Modify Item");
+		deleteItem = new JMenuItem("Delete Item");
+		setOverdraft = new JMenuItem("Set Overdraft");
+		setInterest = new JMenuItem("Set Interest");
+
+		recordsMenu.add(createItem);
+		recordsMenu.add(modifyItem);
+		recordsMenu.add(deleteItem);
+		recordsMenu.add(setOverdraft);
+		recordsMenu.add(setInterest);
+
+		menuBar.add(recordsMenu);
+
+		transactionsMenu = new JMenu("Transactions");
+
+		deposit = new JMenuItem("Deposit");
+		withdraw = new JMenuItem("Withdraw");
+		calcInterest = new JMenuItem("Calculate Interest");
+
+		transactionsMenu.add(deposit);
+		transactionsMenu.add(withdraw);
+		transactionsMenu.add(calcInterest);
+
+		menuBar.add(transactionsMenu);
+
+		fileMenu = new JMenu("File");
+
+		open = new JMenuItem("Open File");
+		save = new JMenuItem("Save File");
+		saveAs = new JMenuItem("Save As");
+
+		fileMenu.add(open);
+		fileMenu.add(save);
+		fileMenu.add(saveAs);
+
+		menuBar.add(fileMenu);
+
+		exitMenu = new JMenu("Exit");
+
+		closeApp = new JMenuItem("Close Application");
+
+		exitMenu.add(closeApp);
+
+		menuBar.add(exitMenu);
+
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
-	
+
 	private ArrayList<Integer> addArray() {
 		ArrayList<Integer> keyList = new ArrayList<Integer>();	
 		for(int i = 0; i<TABLE_SIZE; i++){
 			if(table.containsKey(i))
 				keyList.add(i);
 		}
-	return keyList;
-}
-	
-	
+		return keyList;
+	}
+
+
 	public void displayDetails(int currentItem) {	
-				
+
 		fields.get("Account ID").setText(table.get(currentItem).getAccountID()+"");
 		fields.get("Account Number").setText(table.get(currentItem).getAccountNumber());
 		fields.get("Surname").setText(table.get(currentItem).getSurname());
@@ -486,183 +502,183 @@ public class BankApplication extends JFrame {
 			fields.get("Overdraft").setText(table.get(currentItem).getOverdraft()+"");
 		else
 			fields.get("Overdraft").setText("Only applies to current accs");
-	
+
 	}
-	
+
 	private static RandomAccessFile input;
 	private static RandomAccessFile output;
 	private static final int NUMBER_RECORDS = 100;
 
-	
+
 	public static void openFileRead()
-	   {
-		
+	{
+
 		table.clear();
-			
+
 		fc = new JFileChooser();
 		int returnVal = fc.showOpenDialog(null);
-		 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fc.getSelectedFile();
 
-        } else {
-                }
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
 
-			
-		      try // open file
-		      {
-		    	  if(fc.getSelectedFile()!=null)
-		    		  input = new RandomAccessFile( fc.getSelectedFile(), "r" );
-		      } // end try
-		      catch ( IOException ioException )
-		      {
-		    	  JOptionPane.showMessageDialog(null, "File Does Not Exist.");
-		      } // end catch
-			
-	   } // end method openFile
-	
+		} else {
+		}
+
+
+		try // open file
+		{
+			if(fc.getSelectedFile()!=null)
+				input = new RandomAccessFile( fc.getSelectedFile(), "r" );
+		} // end try
+		catch ( IOException ioException )
+		{
+			JOptionPane.showMessageDialog(null, "File Does Not Exist.");
+		} // end catch
+
+	} // end method openFile
+
 	static String fileToSaveAs = "";
-	
+
 	public static void openFileWrite()
-	   {
+	{
 		if(fileToSaveAs!=""){
-	      try // open file
-	      {
-	         output = new RandomAccessFile( fileToSaveAs, "rw" );
-	         JOptionPane.showMessageDialog(null, "Accounts saved to " + fileToSaveAs);
-	      } // end try
-	      catch ( IOException ioException )
-	      {
-	    	  JOptionPane.showMessageDialog(null, "File does not exist.");
-	      } // end catch
+			try // open file
+			{
+				output = new RandomAccessFile( fileToSaveAs, "rw" );
+				JOptionPane.showMessageDialog(null, "Accounts saved to " + fileToSaveAs);
+			} // end try
+			catch ( IOException ioException )
+			{
+				JOptionPane.showMessageDialog(null, "File does not exist.");
+			} // end catch
 		}
 		else
 			saveToFileAs();
-	   }
-	
+	}
+
 	public static void saveToFileAs()
-	   {
-		
+	{
+
 		fc = new JFileChooser();
-		
-		 int returnVal = fc.showSaveDialog(null);
-         if (returnVal == JFileChooser.APPROVE_OPTION) {
-             File file = fc.getSelectedFile();
-           
-             fileToSaveAs = file.getName();
-             JOptionPane.showMessageDialog(null, "Accounts saved to " + file.getName());
-         } else {
-             JOptionPane.showMessageDialog(null, "Save cancelled by user");
-         }
-        
-     	    
-	         try {
-	        	 if(fc.getSelectedFile()==null){
-	        		 JOptionPane.showMessageDialog(null, "Cancelled");
-	        	 }
-	        	 else
-	        		 output = new RandomAccessFile(fc.getSelectedFile(), "rw" );
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+		int returnVal = fc.showSaveDialog(null);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+
+			fileToSaveAs = file.getName();
+			JOptionPane.showMessageDialog(null, "Accounts saved to " + file.getName());
+		} else {
+			JOptionPane.showMessageDialog(null, "Save cancelled by user");
+		}
+
+
+		try {
+			if(fc.getSelectedFile()==null){
+				JOptionPane.showMessageDialog(null, "Cancelled");
 			}
-	      
-	      
-	     
-	   }
-	
+			else
+				output = new RandomAccessFile(fc.getSelectedFile(), "rw" );
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+	}
+
 	public static void closeFile() 
-	   {
-	      try // close file and exit
-	      {
-	         if ( input != null )
-	            input.close();
-	      } // end try
-	      catch ( IOException ioException )
-	      {
-	         
-	    	  JOptionPane.showMessageDialog(null, "Error closing file.");//System.exit( 1 );
-	      } // end catch
-	   } // end method closeFile
-	
+	{
+		try // close file and exit
+		{
+			if ( input != null )
+				input.close();
+		} // end try
+		catch ( IOException ioException )
+		{
+
+			JOptionPane.showMessageDialog(null, "Error closing file.");//System.exit( 1 );
+		} // end catch
+	} // end method closeFile
+
 	public static void readRecords()
-	   {
-	
-	      RandomAccessBankAccount record = new RandomAccessBankAccount();
+	{
 
-	      
+		RandomAccessBankAccount record = new RandomAccessBankAccount();
 
-	      try // read a record and display
-	      {
-	         while ( true )
-	         {
-	            do
-	            {
-	            	if(input!=null)
-	            		record.read( input );
-	            } while ( record.getAccountID() == 0 );
 
-	       
-	            
-	            BankAccount ba = new BankAccount(record.getAccountID(), record.getAccountNumber(), record.getFirstName(),
-	                    record.getSurname(), record.getAccountType(), record.getBalance(), record.getOverdraft());
-	            
-	            
-	            Integer key = Integer.valueOf(ba.getAccountNumber().trim());
-			
+
+		try // read a record and display
+		{
+			while ( true )
+			{
+				do
+				{
+					if(input!=null)
+						record.read( input );
+				} while ( record.getAccountID() == 0 );
+
+
+
+				BankAccount ba = new BankAccount(record.getAccountID(), record.getAccountNumber(), record.getFirstName(),
+						record.getSurname(), record.getAccountType(), record.getBalance(), record.getOverdraft());
+
+
+				Integer key = Integer.valueOf(ba.getAccountNumber().trim());
+
 				int hash = (key%TABLE_SIZE);
-		
-				
+
+
 				while(table.containsKey(hash)){
-			
+
 					hash = hash+1;
 				}
-				
-	            table.put(hash, ba);
-		
 
-	         } // end while
-	      } // end try
-	      catch ( EOFException eofException ) // close file
-	      {
-	         return; // end of file was reached
-	      } // end catch
-	      catch ( IOException ioException )
-	      {
-	    	  JOptionPane.showMessageDialog(null, "Error reading file.");
-	         System.exit( 1 );
-	      } // end catch
-	   }
-	
-public static void saveToFile(){
-		
-	
+				table.put(hash, ba);
+
+
+			} // end while
+		} // end try
+		catch ( EOFException eofException ) // close file
+		{
+			return; // end of file was reached
+		} // end catch
+		catch ( IOException ioException )
+		{
+			JOptionPane.showMessageDialog(null, "Error reading file.");
+			System.exit( 1 );
+		} // end catch
+	}
+
+	public static void saveToFile(){
+
+
 		RandomAccessBankAccount record = new RandomAccessBankAccount();
-	
-	      Scanner input = new Scanner( System.in );
 
-	      
-	      for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-			   record.setAccountID(entry.getValue().getAccountID());
-			   record.setAccountNumber(entry.getValue().getAccountNumber());
-			   record.setFirstName(entry.getValue().getFirstName());
-			   record.setSurname(entry.getValue().getSurname());
-			   record.setAccountType(entry.getValue().getAccountType());
-			   record.setBalance(entry.getValue().getBalance());
-			   record.setOverdraft(entry.getValue().getOverdraft());
-			   
-			   if(output!=null){
-			   
-			      try {
-						record.write( output );
-					} catch (IOException u) {
-						u.printStackTrace();
-					}
-			   }
-			   
+		Scanner input = new Scanner( System.in );
+
+
+		for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
+			record.setAccountID(entry.getValue().getAccountID());
+			record.setAccountNumber(entry.getValue().getAccountNumber());
+			record.setFirstName(entry.getValue().getFirstName());
+			record.setSurname(entry.getValue().getSurname());
+			record.setAccountType(entry.getValue().getAccountType());
+			record.setBalance(entry.getValue().getBalance());
+			record.setOverdraft(entry.getValue().getOverdraft());
+
+			if(output!=null){
+
+				try {
+					record.write( output );
+				} catch (IOException u) {
+					u.printStackTrace();
+				}
 			}
-    	  
-	      
+
+		}
+
+
 	}
 
 	public static void writeFile(){
@@ -671,38 +687,38 @@ public static void saveToFile(){
 		//addRecords();
 		closeFile();
 	}
-	
+
 	public static void saveFileAs(){
 		saveToFileAs();
 		saveToFile();	
 		closeFile();
 	}
-	
+
 	public static void readFile(){
-	    openFileRead();
-	    readRecords();
-	    closeFile();		
+		openFileRead();
+		readRecords();
+		closeFile();		
 	}
-	
+
 	public void put(int key, BankAccount value){
 		int hash = (key%TABLE_SIZE);
-	
+
 		while(table.containsKey(key)){
 			hash = hash+1;
-		
+
 		}
 		table.put(hash, value);
 
 	}
-	
+
 	public static void main(String[] args) {
 		BankApplication ba = new BankApplication();
 		ba.setSize(1200,400);
 		ba.pack();
 		ba.setVisible(true);
 	}
-	
-	
+
+
 }
 
 
@@ -770,4 +786,4 @@ When presenting the results in a JTable for the List All option, the records sho
 For all menu options in your program, you should perform whatever validation, error-checking and exception-handling you consider to be necessary.
 The programs Person.java and PersonApplication.java (from OOSD2) and TableDemo.java may be of use to you in constructing your interfaces. The set of Java programs used to create, edit and modify random access files will also provide you with a basis for your submission.
 
-*/
+ */
