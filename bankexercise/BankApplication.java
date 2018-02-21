@@ -63,8 +63,6 @@ public class BankApplication extends JFrame {
 		}
 		
 		add(buttonPanel, BorderLayout.SOUTH);
-		
-		
 		createMenus();
 		setOverdraft.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -81,9 +79,7 @@ public class BankApplication extends JFrame {
 	
 		ActionListener first = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				saveOpenValues();
-				
 				currentItem=0;
 				while(!table.containsKey(currentItem)){
 					currentItem++;
@@ -95,10 +91,8 @@ public class BankApplication extends JFrame {
 	
 		ActionListener next = new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
 				saveOpenValues();
 				int maxKey = Collections.max(addArray());	
-		
 					if(currentItem<maxKey){
 						currentItem++;
 						while(!table.containsKey(currentItem)){
@@ -106,16 +100,13 @@ public class BankApplication extends JFrame {
 						}
 					}
 					displayDetails(currentItem);			
-			}
-
-			
+			}	
 		};
 		
 		
 
 		ActionListener prev = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				saveOpenValues();
 				int minKey = Collections.max(addArray());
 				if(currentItem>minKey){
@@ -129,17 +120,12 @@ public class BankApplication extends JFrame {
 		};
 	
 		
-		
-		
 		ActionListener last = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
-				
-				currentItem =29;
-								
+				currentItem =TABLE_SIZE;			
 				while(!table.containsKey(currentItem)){
-					currentItem--;
-					
+					currentItem--;	
 				}
 				
 				displayDetails(currentItem);
