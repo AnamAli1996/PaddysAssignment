@@ -198,25 +198,22 @@ public class BankApplication extends JFrame {
 				JFrame frame = new JFrame("TableDemo");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				String col[] = {"ID","Number","Name", "Account Type", "Balance", "Overdraft"};
-
 				DefaultTableModel tableModel = new DefaultTableModel(col, 0);
 				jTable = new JTable(tableModel);
 				JScrollPane scrollPane = new JScrollPane(jTable);
 				jTable.setAutoCreateRowSorter(true);
-
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-
-
-					Object[] objs = {entry.getValue().getAccountID(), entry.getValue().getAccountNumber(), 
+					Object[] objs = {
+							entry.getValue().getAccountID(), 
+							entry.getValue().getAccountNumber(), 
 							entry.getValue().getFirstName().trim() + " " + entry.getValue().getSurname().trim(), 
-							entry.getValue().getAccountType(), entry.getValue().getBalance(), 
+							entry.getValue().getAccountType(), 
+							entry.getValue().getBalance(), 
 							entry.getValue().getOverdraft()};
-
 					tableModel.addRow(objs);
 				}
 				frame.setSize(600,500);
 				frame.add(scrollPane);
-				//frame.pack();
 				frame.setVisible(true);			
 			}
 		});
