@@ -328,14 +328,12 @@ public class BankApplication extends JFrame {
 					if(entry.getValue().getAccountType().equals("Deposit")){
 						double equation = 1 + ((interestRate)/100);
 						entry.getValue().setBalance(entry.getValue().getBalance()*equation);
-						//System.out.println(equation);
 						JOptionPane.showMessageDialog(null, "Balances Updated");
 						displayDetails(entry.getKey());
 					}
 				}
 			}
 		});		
-
 	}
 
 	public void saveOpenValues(){		
