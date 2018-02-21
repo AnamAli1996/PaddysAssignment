@@ -3,6 +3,7 @@ package bankexercise;
 
 public class BankAccount {
 	
+	private static int count = 0;
 	private int accountID;
 	private String accountNumber;
 	private String surname;
@@ -11,10 +12,8 @@ public class BankAccount {
 	private double balance;
 	private double overdraft;
 	
-	public static int count = 0;
-	
-	public BankAccount(int accountID, String accountNumber, String surname, String firstName, String accountType, double balance, double overdraft){
-		this.accountID = accountID;
+	public BankAccount(String accountNumber, String surname, String firstName, String accountType, double balance, double overdraft){
+		setAccountID(++count);
 		this.accountNumber = accountNumber;
 		this.surname = surname;
 		this.firstName = firstName;
@@ -24,7 +23,7 @@ public class BankAccount {
 	}
 	
 	public BankAccount(){
-		this(0, "", "", "", "", 0.0, 0.0);
+		this("", "", "", "", 0.0, 0.0);
 	}
 	
 	
