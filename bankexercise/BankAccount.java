@@ -61,7 +61,6 @@ public class BankAccount {
 		this.accountType = accountType;
 	}
 	
-	
 	public String getAccType(){
 		return accountType;
 	}

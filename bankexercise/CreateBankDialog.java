@@ -21,20 +21,15 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 public class CreateBankDialog extends JFrame {
-
-	
-	private final static int TABLE_SIZE = 29;
 	Random rand = new Random();
-	
 	ArrayList<BankAccount> accountList;
-
 	HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	
 	
 	
 	
 	public void put(int key, BankAccount value){
-		int hash = (key%TABLE_SIZE);
+		int hash = (key%BankApplication.TABLE_SIZE);
 
 		while(table.containsKey(key)){
 			hash = hash+1;
@@ -188,7 +183,7 @@ public class CreateBankDialog extends JFrame {
 							
 							int key = Integer.parseInt(account.getAccountNumber());
 							
-							int hash = (key%TABLE_SIZE);
+							int hash = (key%BankApplication.TABLE_SIZE);
 							
 							while(table.containsKey(hash)){
 								hash = hash+1;
