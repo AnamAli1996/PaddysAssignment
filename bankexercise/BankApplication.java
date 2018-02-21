@@ -172,18 +172,13 @@ public class BankApplication extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				fields.get("Surname").setEditable(true);
 				fields.get("First Name").setEditable(true);
-				
 				openValues = true;
 			}
 		});
 		
 		setInterest.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				
-				 String interestRateStr = JOptionPane.showInputDialog("Enter Interest Rate: (do not type the % sign)");
-				 if(interestRateStr!=null)
-					 interestRate = Double.parseDouble(interestRateStr);
-			
+			interestRate = Double.parseDouble(JOptionPane.showInputDialog("Enter Interest Rate: (do not type the % sign)"));
 			}
 		});
 		
