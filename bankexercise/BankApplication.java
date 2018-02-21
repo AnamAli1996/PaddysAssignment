@@ -336,11 +336,10 @@ public class BankApplication extends JFrame {
 		});		
 	}
 
-	public void saveOpenValues(){		
+	private void saveOpenValues(){		
 		if (openValues){
 			fields.get("Surname").setEditable(false);
 			fields.get("First Name").setEditable(false);
-
 			table.get(currentItem).setSurname(fields.get("Surname").getText());
 			table.get(currentItem).setFirstName(fields.get("First Name").getText());
 		}
