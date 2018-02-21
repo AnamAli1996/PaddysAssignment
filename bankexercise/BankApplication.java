@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.*;
+import java.util.Map.Entry;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
@@ -242,21 +244,12 @@ public class BankApplication extends JFrame {
 
 		findBySurname.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-
 				String sName = JOptionPane.showInputDialog("Search for surname: ");
 				boolean found = false;
-
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-
 					if(sName.equalsIgnoreCase((entry.getValue().getSurname().trim()))){
 						found = true;
-						fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
-						fields.get("Account Number").setText(entry.getValue().getAccountNumber());
-						fields.get("Surname").setText(entry.getValue().getSurname());
-						fields.get("First Name").setText(entry.getValue().getFirstName());
-						fields.get("Account Type").setText(entry.getValue().getAccountType());
-						fields.get("Balance").setText(entry.getValue().getBalance()+"");
-						fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
+						findBy(entry);
 					}
 				}		
 				if(found)
@@ -268,29 +261,19 @@ public class BankApplication extends JFrame {
 
 		findByAccount.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-
 				String accNum = JOptionPane.showInputDialog("Search for account number: ");
 				boolean found = false;
-
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						found = true;
-						fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
-						fields.get("Account Number").setText(entry.getValue().getAccountNumber());
-						fields.get("Surname").setText(entry.getValue().getSurname());
-						fields.get("First Name").setText(entry.getValue().getFirstName());
-						fields.get("Account Type").setText(entry.getValue().getAccountType());
-						fields.get("Balance").setText(entry.getValue().getBalance()+"");
-						fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");						
-
+						findBy(entry);					
 					}			 
 				}
 				if(found)
 					JOptionPane.showMessageDialog(null, "Account number " + accNum + " found.");
 				else
 					JOptionPane.showMessageDialog(null, "Account number " + accNum + " not found.");
-
 			}
 		});
 
@@ -375,6 +358,16 @@ public class BankApplication extends JFrame {
 			table.get(currentItem).setFirstName(fields.get("First Name").getText());
 		}
 	}	
+	
+	private void findBy(Entry<Integer, BankAccount> entry) {
+		fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
+		fields.get("Account Number").setText(entry.getValue().getAccountNumber());
+		fields.get("Surname").setText(entry.getValue().getSurname());
+		fields.get("First Name").setText(entry.getValue().getFirstName());
+		fields.get("Account Type").setText(entry.getValue().getAccountType());
+		fields.get("Balance").setText(entry.getValue().getBalance()+"");
+		fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
+	}
 	
 	private void displayCurrentItems() {
 		currentItem=0;
