@@ -446,7 +446,6 @@ public class BankApplication extends JFrame {
 		return keyList;
 	}
 
-
 	public void displayDetails(int currentItem) {	
 
 		fields.get("Account ID").setText(table.get(currentItem).getAccountID()+"");
