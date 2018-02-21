@@ -33,7 +33,7 @@ public class BankApplication extends JFrame {
 	static JFileChooser fc;
 	JTable jTable;
 	double interestRate;
-	int currentItem;
+	int currentItem=0;
 	boolean openValues;
 
 	public BankApplication() {	
@@ -82,10 +82,9 @@ public class BankApplication extends JFrame {
 	private void addActionListers() {
 		setOverdraft.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				if(table.get(currentItem).getAccountType().trim().equals("Current")){
-					String newOverdraftStr = JOptionPane.showInputDialog(null, "Enter new Overdraft", JOptionPane.OK_CANCEL_OPTION);
-					fields.get("Overdraft").setText(newOverdraftStr);
-					table.get(currentItem).setOverdraft(Double.parseDouble(newOverdraftStr));
+				if(table.get(currentItem).getAccountType().equals("Current")){
+					fields.get("Overdraft").setText(JOptionPane.showInputDialog(null, "Enter new Overdraft", JOptionPane.OK_CANCEL_OPTION));
+					table.get(currentItem).setOverdraft(Double.parseDouble(fields.get("Overdraft").getText()));
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Overdraft only applies to Current Accounts");
