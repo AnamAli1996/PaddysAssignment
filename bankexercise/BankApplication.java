@@ -69,7 +69,11 @@ public class BankApplication extends JFrame {
 
 		for (String str: uiComp) {
 			labels.put(str, new JLabel(str + ": "));
-			fields.put(str, new JTextField(15));
+			if(str.equals("First Name") || str.equals("Surname")) {
+				fields.put(str, new JTextField(20));
+			}else {
+				fields.put(str, new JTextField(15));
+			}
 			fields.get(str).setEditable(false);
 
 			displayPanel.add(labels.get(str), "growx, pushx");
