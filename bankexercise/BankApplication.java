@@ -230,7 +230,6 @@ public class BankApplication extends JFrame {
 
 		closeApp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
 				int answer = JOptionPane.showConfirmDialog(BankApplication.this, "Do you want to save before quitting?");
 				if (answer == JOptionPane.YES_OPTION) {
 					saveFileAs();
@@ -238,11 +237,6 @@ public class BankApplication extends JFrame {
 				}
 				else if(answer == JOptionPane.NO_OPTION)
 					dispose();
-				else if(answer==0)
-					;
-
-
-
 			}
 		});	
 
