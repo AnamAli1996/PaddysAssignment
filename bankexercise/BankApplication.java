@@ -46,7 +46,7 @@ public class BankApplication extends JFrame {
 		createLabelsAndTextFields();
 		createButtons();
 		createMenus();
-		addActionListers();
+		addActionListeners();
 
 	}
 	
@@ -79,7 +79,7 @@ public class BankApplication extends JFrame {
 	}
 	
 	//Method for adding ActionListeners
-	private void addActionListers() {
+	private void addActionListeners() {
 		setOverdraft.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(table.get(currentItem).getAccountType().equals("Current")){
@@ -145,27 +145,24 @@ public class BankApplication extends JFrame {
 				displayDetails(currentItem);
 			}
 		};
-
-		itemButtons[2].addActionListener(next);
-		nextItem.addActionListener(next);
+		
+		itemButtons[0].addActionListener(first);
+		firstItem.addActionListener(first);
 
 		itemButtons[1].addActionListener(prev);
 		prevItem.addActionListener(prev);
-
-		itemButtons[0].addActionListener(first);
-		firstItem.addActionListener(first);
+		
+		itemButtons[2].addActionListener(next);
+		nextItem.addActionListener(next);
 
 		itemButtons[3].addActionListener(last);
 		lastItem.addActionListener(last);
 
 
 		deleteItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-
+			public void actionPerformed(ActionEvent e) {
 				table.remove(currentItem);
 				JOptionPane.showMessageDialog(null, "Account Deleted");
-
-
 				currentItem=0;
 				while(!table.containsKey(currentItem)){
 					currentItem++;
@@ -198,10 +195,7 @@ public class BankApplication extends JFrame {
 
 		listAll.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-
 				JFrame frame = new JFrame("TableDemo");
-				JPanel pan = new JPanel();
-
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				String col[] = {"ID","Number","Name", "Account Type", "Balance", "Overdraft"};
 
