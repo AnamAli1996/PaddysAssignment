@@ -64,79 +64,8 @@ public class BankApplication extends JFrame {
 		
 		add(buttonPanel, BorderLayout.SOUTH);
 		
-		menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
 		
-		navigateMenu = new JMenu("Navigate");
-
-	    	nextItem = new JMenuItem("Next Item");
-	    	prevItem = new JMenuItem("Previous Item");
-	    	firstItem = new JMenuItem("First Item");
-	    	lastItem = new JMenuItem("Last Item");
-	    	findByAccount = new JMenuItem("Find by Account Number");
-	    	findBySurname = new JMenuItem("Find by Surname");
-	    	listAll = new JMenuItem("List All Records");
-	    	
-	    	navigateMenu.add(nextItem);
-	    	navigateMenu.add(prevItem);
-	    	navigateMenu.add(firstItem);
-	    	navigateMenu.add(lastItem);
-	    	navigateMenu.add(findByAccount);
-	    	navigateMenu.add(findBySurname);
-	    	navigateMenu.add(listAll);
-	    	
-	    	menuBar.add(navigateMenu);
-	    	
-	    	recordsMenu = new JMenu("Records");
-	    	
-	    	createItem = new JMenuItem("Create Item");
-	    	modifyItem = new JMenuItem("Modify Item");
-	    	deleteItem = new JMenuItem("Delete Item");
-	    	setOverdraft = new JMenuItem("Set Overdraft");
-	    	setInterest = new JMenuItem("Set Interest");
-	    	
-	    	recordsMenu.add(createItem);
-	    	recordsMenu.add(modifyItem);
-	    	recordsMenu.add(deleteItem);
-	    	recordsMenu.add(setOverdraft);
-	    	recordsMenu.add(setInterest);
-	    	
-	    	menuBar.add(recordsMenu);
-	    	
-	    	transactionsMenu = new JMenu("Transactions");
-	    	
-	    	deposit = new JMenuItem("Deposit");
-	    	withdraw = new JMenuItem("Withdraw");
-	    	calcInterest = new JMenuItem("Calculate Interest");
-	    	
-	    	transactionsMenu.add(deposit);
-	    	transactionsMenu.add(withdraw);
-	    	transactionsMenu.add(calcInterest);
-	    	
-	    	menuBar.add(transactionsMenu);
-	    	
-	    	fileMenu = new JMenu("File");
-	    	
-	    	open = new JMenuItem("Open File");
-	    	save = new JMenuItem("Save File");
-	    	saveAs = new JMenuItem("Save As");
-	    	
-	    	fileMenu.add(open);
-	    	fileMenu.add(save);
-	    	fileMenu.add(saveAs);
-	    	
-	    	menuBar.add(fileMenu);
-	    	
-	    	exitMenu = new JMenu("Exit");
-	    	
-	    	closeApp = new JMenuItem("Close Application");
-	    	
-	    	exitMenu.add(closeApp);
-	    	
-	    	menuBar.add(exitMenu);
-	    	
-	    	setDefaultCloseOperation(EXIT_ON_CLOSE);
-	
+		createMenus();
 		setOverdraft.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				if(table.get(currentItem).getAccountType().trim().equals("Current")){
@@ -478,6 +407,81 @@ public class BankApplication extends JFrame {
 			table.get(currentItem).setFirstName(fields.get("First Name").getText());
 		}
 	}	
+	
+	private void createMenus() {
+		menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		navigateMenu = new JMenu("Navigate");
+
+	    	nextItem = new JMenuItem("Next Item");
+	    	prevItem = new JMenuItem("Previous Item");
+	    	firstItem = new JMenuItem("First Item");
+	    	lastItem = new JMenuItem("Last Item");
+	    	findByAccount = new JMenuItem("Find by Account Number");
+	    	findBySurname = new JMenuItem("Find by Surname");
+	    	listAll = new JMenuItem("List All Records");
+	    	
+	    	navigateMenu.add(nextItem);
+	    	navigateMenu.add(prevItem);
+	    	navigateMenu.add(firstItem);
+	    	navigateMenu.add(lastItem);
+	    	navigateMenu.add(findByAccount);
+	    	navigateMenu.add(findBySurname);
+	    	navigateMenu.add(listAll);
+	    	
+	    	menuBar.add(navigateMenu);
+	    	
+	    	recordsMenu = new JMenu("Records");
+	    	
+	    	createItem = new JMenuItem("Create Item");
+	    	modifyItem = new JMenuItem("Modify Item");
+	    	deleteItem = new JMenuItem("Delete Item");
+	    	setOverdraft = new JMenuItem("Set Overdraft");
+	    	setInterest = new JMenuItem("Set Interest");
+	    	
+	    	recordsMenu.add(createItem);
+	    	recordsMenu.add(modifyItem);
+	    	recordsMenu.add(deleteItem);
+	    	recordsMenu.add(setOverdraft);
+	    	recordsMenu.add(setInterest);
+	    	
+	    	menuBar.add(recordsMenu);
+	    	
+	    	transactionsMenu = new JMenu("Transactions");
+	    	
+	    	deposit = new JMenuItem("Deposit");
+	    	withdraw = new JMenuItem("Withdraw");
+	    	calcInterest = new JMenuItem("Calculate Interest");
+	    	
+	    	transactionsMenu.add(deposit);
+	    	transactionsMenu.add(withdraw);
+	    	transactionsMenu.add(calcInterest);
+	    	
+	    	menuBar.add(transactionsMenu);
+	    	
+	    	fileMenu = new JMenu("File");
+	    	
+	    	open = new JMenuItem("Open File");
+	    	save = new JMenuItem("Save File");
+	    	saveAs = new JMenuItem("Save As");
+	    	
+	    	fileMenu.add(open);
+	    	fileMenu.add(save);
+	    	fileMenu.add(saveAs);
+	    	
+	    	menuBar.add(fileMenu);
+	    	
+	    	exitMenu = new JMenu("Exit");
+	    	
+	    	closeApp = new JMenuItem("Close Application");
+	    	
+	    	exitMenu.add(closeApp);
+	    	
+	    	menuBar.add(exitMenu);
+	    	
+	    	setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
 	
 	private ArrayList<Integer> addArray() {
 		ArrayList<Integer> keyList = new ArrayList<Integer>();	
