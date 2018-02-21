@@ -264,7 +264,6 @@ public class BankApplication extends JFrame {
 				String accNum = JOptionPane.showInputDialog("Search for account number: ");
 				boolean found = false;
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
-
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						found = true;
 						findBy(entry);					
@@ -281,14 +280,12 @@ public class BankApplication extends JFrame {
 			public void actionPerformed(ActionEvent e){
 				String accNum = JOptionPane.showInputDialog("Account number to deposit into: ");
 				boolean found = false;
-
 				for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {
 					if(accNum.equals(entry.getValue().getAccountNumber().trim())){
 						found = true;
-						String toDeposit = JOptionPane.showInputDialog("Account found, Enter Amount to Deposit: ");
-						entry.getValue().setBalance(entry.getValue().getBalance() + Double.parseDouble(toDeposit));
+						entry.getValue().setBalance(entry.getValue().getBalance() +
+								Double.parseDouble(JOptionPane.showInputDialog("Account found, Enter Amount to Deposit: ")));
 						displayDetails(entry.getKey());
-						//balanceTextField.setText(entry.getValue().getBalance()+"");
 					}
 				}
 				if (!found)
