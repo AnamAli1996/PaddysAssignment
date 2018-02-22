@@ -113,7 +113,6 @@ public class FileHandling {
 		RandomAccessBankAccount record = new RandomAccessBankAccount();
 		for (Map.Entry<Integer, BankAccount> entry : BankApplication.table.entrySet()) {
 			record.setAccountID(entry.getValue().getAccountID());
-			System.out.println(entry.getValue().getAccountID());
 			record.setAccountNumber(entry.getValue().getAccountNumber());
 			record.setFirstName(entry.getValue().getFirstName());
 			record.setSurname(entry.getValue().getSurname());
