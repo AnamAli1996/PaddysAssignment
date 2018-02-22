@@ -14,6 +14,10 @@ import net.miginfocom.swing.MigLayout;
 public class CreateBankDialog extends JFrame {
 	ArrayList<BankAccount> accountList;
 	HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
+	 private static int counter = 0;
+	 private int accountId;
+
+	
 	
 	public void put(int key, BankAccount value){
 		int hash = (key%BankApplication.TABLE_SIZE);
@@ -54,7 +58,7 @@ public class CreateBankDialog extends JFrame {
 				String surname = surnameTextField.getText();
 				String firstName = firstNameTextField.getText();
 				String accountType = comboBox.getSelectedItem().toString();
-				
+				accountId = ++counter;
 				if (accountNumber != null && accountNumber.length()==8 && surname.length() != 0 && firstName.length() != 0) {
 					try {
 						boolean accNumTaken=false;
@@ -65,7 +69,7 @@ public class CreateBankDialog extends JFrame {
 							 }
 						
 						if(!accNumTaken){
-							BankAccount account = new BankAccount(accountNumber, surname, firstName, accountType, 0.0, 0.0);
+							BankAccount account = new BankAccount(accountId, accountNumber, surname, firstName, accountType, 0.0, 0.0);
 							int key = Integer.parseInt(account.getAccountNumber());
 							put(key, account);
 						}

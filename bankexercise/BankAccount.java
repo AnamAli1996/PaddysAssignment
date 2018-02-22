@@ -12,8 +12,8 @@ public class BankAccount {
 	private double balance;
 	private double overdraft;
 	
-	public BankAccount(String accountNumber, String surname, String firstName, String accountType, double balance, double overdraft){
-		setAccountID(++count);
+	public BankAccount(int accountId, String accountNumber, String surname, String firstName, String accountType, double balance, double overdraft){
+		this.accountID = accountId;
 		this.accountNumber = accountNumber;
 		this.surname = surname;
 		this.firstName = firstName;
@@ -23,10 +23,8 @@ public class BankAccount {
 	}
 	
 	public BankAccount(){
-		this("", "", "", "", 0.0, 0.0);
+		this(0,"", "", "", "", 0.0, 0.0);
 	}
-	
-	
 	
 	public int getAccountID() {
 		return accountID;

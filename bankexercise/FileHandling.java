@@ -1,13 +1,6 @@
 package bankexercise;
-
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.util.Map;
-import java.util.Scanner;
-
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -97,7 +90,7 @@ public class FileHandling {
 						record.read( input );
 				} while ( record.getAccountID() == 0 );
 
-				BankAccount ba = new BankAccount(record.getAccountNumber(), record.getFirstName(),
+				BankAccount ba = new BankAccount(record.getAccountID(),record.getAccountNumber(), record.getFirstName(),
 						record.getSurname(), record.getAccountType(), record.getBalance(), record.getOverdraft());
 				Integer key = Integer.valueOf(ba.getAccountNumber().trim());
 				int hash = (key%BankApplication.TABLE_SIZE);
@@ -120,6 +113,7 @@ public class FileHandling {
 		RandomAccessBankAccount record = new RandomAccessBankAccount();
 		for (Map.Entry<Integer, BankAccount> entry : BankApplication.table.entrySet()) {
 			record.setAccountID(entry.getValue().getAccountID());
+			System.out.println(entry.getValue().getAccountID());
 			record.setAccountNumber(entry.getValue().getAccountNumber());
 			record.setFirstName(entry.getValue().getFirstName());
 			record.setSurname(entry.getValue().getSurname());

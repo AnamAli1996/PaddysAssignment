@@ -8,12 +8,12 @@ public class RandomAccessBankAccount extends BankAccount {
 	public static final int SIZE = 140;
 	
 	public RandomAccessBankAccount(){
-		this("", "", "", "", 0.0, 0.0);
+		this(0,"", "", "", "", 0.0, 0.0);
 	}
 	
-	public RandomAccessBankAccount(String accountNumber, String firstName, String surname, String accountType,
+	public RandomAccessBankAccount(int id, String accountNumber, String firstName, String surname, String accountType,
 			double balance, double overdraft){
-		super(accountNumber, firstName, surname, accountType, balance, overdraft);
+		super(id, accountNumber, firstName, surname, accountType, balance, overdraft);
 	}
 	
 	public void read(RandomAccessFile file) throws IOException{
@@ -37,7 +37,7 @@ public class RandomAccessBankAccount extends BankAccount {
 	}
 	
 	public void write(RandomAccessFile file) throws IOException{
-		file.writeInt(getAccountID());
+		file.writeInt(getAccountID()); 
 		writeName(file, getAccountNumber());
 		writeName(file, getFirstName());
 		writeName(file, getSurname());
@@ -48,12 +48,10 @@ public class RandomAccessBankAccount extends BankAccount {
 	
 	private void writeName(RandomAccessFile file, String name) throws IOException{
 		StringBuffer buffer = null;
-		
 		if(name!=null)
 			buffer = new StringBuffer(name);
 		else
 			buffer = new StringBuffer(15);
-		
 		buffer.setLength(15);
 		file.writeChars(buffer.toString());
 	}

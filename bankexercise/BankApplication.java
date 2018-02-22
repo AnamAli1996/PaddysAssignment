@@ -119,24 +119,22 @@ public class BankApplication extends JFrame {
 				displayDetails(currentItem);			
 			}	
 		};
-
-
-
+	
 		ActionListener prev = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				saveOpenValues();
-				int minKey = Collections.max(addArray());
-				if(currentItem>minKey){
-					currentItem--;
-					while(!table.containsKey(currentItem)){
-						currentItem--;
-					}
-				}
-				displayDetails(currentItem);				
-			}
-		};
-
-
+					public void actionPerformed(ActionEvent e) {	
+							saveOpenValues();
+							int minKey = Collections.min(addArray());			
+							if(currentItem>minKey){
+								currentItem--;
+								while(!table.containsKey(currentItem)){
+									currentItem--;
+								}
+							}
+							displayDetails(currentItem);				      
+						}
+					};
+					
+					
 		ActionListener last = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
