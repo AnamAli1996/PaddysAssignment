@@ -35,7 +35,7 @@ public class FileHandling {
 		} // end catch
 	} // end method openFile
 
-	
+
 
 	public static void openFileWrite(){
 		if(fileToSaveAs!=""){

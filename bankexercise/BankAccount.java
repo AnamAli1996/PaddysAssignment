@@ -1,9 +1,6 @@
 package bankexercise;
 
-
 public class BankAccount {
-	
-	private static int count = 0;
 	private int accountID;
 	private String accountNumber;
 	private String surname;

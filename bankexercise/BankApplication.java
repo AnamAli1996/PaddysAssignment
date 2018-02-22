@@ -3,11 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -16,7 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
 
 public class BankApplication extends JFrame {
-
+	private static final long serialVersionUID = 1L;
 	ArrayList<BankAccount> accountList = new ArrayList<BankAccount>();
 	static HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	final static int TABLE_SIZE = 29;
@@ -32,7 +27,7 @@ public class BankApplication extends JFrame {
 	String[] uiComp = {"Account ID", "Account Number", "First Name", "Surname", "Account Type", "Balance", "Overdraft"};
 	Map<String, JLabel> labels = new HashMap<String, JLabel>();
 	Map<String, JTextField> fields = new HashMap<String, JTextField>();
-	
+
 	JTable jTable;
 	double interestRate;
 	int currentItem=0;
@@ -51,7 +46,7 @@ public class BankApplication extends JFrame {
 		addActionListeners();
 
 	}
-	
+
 	//Method for creating buttons
 	private void createButtons() {
 		JPanel buttonPanel = new JPanel(new GridLayout(1, 4));
@@ -62,7 +57,7 @@ public class BankApplication extends JFrame {
 
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
-	
+
 	//Method for creating labels and textfields
 	private void createLabelsAndTextFields() {
 		JPanel displayPanel = new JPanel(new MigLayout());
@@ -83,7 +78,7 @@ public class BankApplication extends JFrame {
 		add(displayPanel, BorderLayout.CENTER);
 
 	}
-	
+
 	//Method for adding ActionListeners
 	private void addActionListeners() {
 		setOverdraft.addActionListener(new ActionListener(){
@@ -119,22 +114,22 @@ public class BankApplication extends JFrame {
 				displayDetails(currentItem);			
 			}	
 		};
-	
+
 		ActionListener prev = new ActionListener() {
-					public void actionPerformed(ActionEvent e) {	
-							saveOpenValues();
-							int minKey = Collections.min(addArray());			
-							if(currentItem>minKey){
-								currentItem--;
-								while(!table.containsKey(currentItem)){
-									currentItem--;
-								}
-							}
-							displayDetails(currentItem);				      
-						}
-					};
-					
-					
+			public void actionPerformed(ActionEvent e) {	
+				saveOpenValues();
+				int minKey = Collections.min(addArray());			
+				if(currentItem>minKey){
+					currentItem--;
+					while(!table.containsKey(currentItem)){
+						currentItem--;
+					}
+				}
+				displayDetails(currentItem);				      
+			}
+		};
+
+
 		ActionListener last = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
@@ -145,13 +140,13 @@ public class BankApplication extends JFrame {
 				displayDetails(currentItem);
 			}
 		};
-		
+
 		itemButtons[0].addActionListener(first);
 		firstItem.addActionListener(first);
 
 		itemButtons[1].addActionListener(prev);
 		prevItem.addActionListener(prev);
-		
+
 		itemButtons[2].addActionListener(next);
 		nextItem.addActionListener(next);
 
@@ -346,7 +341,7 @@ public class BankApplication extends JFrame {
 			table.get(currentItem).setFirstName(fields.get("First Name").getText());
 		}
 	}	
-	
+
 	private void findBy(Entry<Integer, BankAccount> entry) {
 		fields.get("Account ID").setText(entry.getValue().getAccountID()+"");
 		fields.get("Account Number").setText(entry.getValue().getAccountNumber());
@@ -356,7 +351,7 @@ public class BankApplication extends JFrame {
 		fields.get("Balance").setText(entry.getValue().getBalance()+"");
 		fields.get("Overdraft").setText(entry.getValue().getOverdraft()+"");
 	}
-	
+
 	private void displayCurrentItems() {
 		currentItem=0;
 		do{currentItem++;
@@ -464,4 +459,3 @@ public class BankApplication extends JFrame {
 	}
 }
 
-	
