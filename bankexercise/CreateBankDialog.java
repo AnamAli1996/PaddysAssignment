@@ -7,19 +7,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
 
 public class CreateBankDialog extends JFrame {
-	Random rand = new Random();
 	ArrayList<BankAccount> accountList;
 	HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	
@@ -32,54 +24,40 @@ public class CreateBankDialog extends JFrame {
 		table.put(hash, value);
 	}
 	
-	
-	
-	
 	// Constructor code based on that for the Create and Edit dialog classes in the Shapes exercise.
 
-	JLabel accountIDLabel, accountNumberLabel, firstNameLabel, surnameLabel, accountTypeLabel, balanceLabel, overdraftLabel;
-	JComboBox<String> comboBox;
-	JTextField accountNumberTextField;
-	private JTextField firstNameTextField;
-	private JTextField surnameTextField;
-	private JTextField accountTypeTextField;
-	private JTextField balanceTextField;
-	private JTextField overdraftTextField;
+	JLabel accountNumberLabel, firstNameLabel, surnameLabel, accountTypeLabel, balanceLabel, overdraftLabel;
+	JTextField accountNumberTextField, firstNameTextField, surnameTextField, accountTypeTextField, balanceTextField, overdraftTextField;
+	JButton addButton, cancelButton;
 	
 	CreateBankDialog(HashMap<Integer, BankAccount> accounts) {
 		super("Add Bank Details");
 		table = accounts;
 		setLayout(new BorderLayout());
 		String[] comboTypes = {"Current", "Deposit"};
-		final JComboBox<String> comboBox = new JComboBox<String>(comboTypes);
-		createLabelsAndTextFields();
+		JComboBox<String> comboBox = new JComboBox<String>(comboTypes);
 		
+		createLabelsAndTextFields(comboBox);
+		createButtons();
+		addActionListeners(comboBox);
 		
-		JPanel buttonPanel = new JPanel(new FlowLayout());
-		JButton addButton = new JButton("Add");
-		JButton cancelButton = new JButton("Cancel");
-		
-		buttonPanel.add(addButton);
-		buttonPanel.add(cancelButton);
-		
-		add(buttonPanel, BorderLayout.SOUTH);
-		
+		setSize(400,800);
+		pack();
+		setVisible(true);
+
+	}
+
+	private void addActionListeners(JComboBox<String> comboBox) {
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String accountNumber = accountNumberTextField.getText();
 				String surname = surnameTextField.getText();
 				String firstName = firstNameTextField.getText();
 				String accountType = comboBox.getSelectedItem().toString();
-				String balanceStr = balanceTextField.getText();
-				String overdraftStr = overdraftTextField.getText();
-				double balance;
-				double overdraft;
-				if (accountNumber != null && accountNumber.length()==8 && surname != null && firstName != null && accountType != null) {
+				
+				if (accountNumber != null && accountNumber.length()==8 && surname.length() != 0 && firstName.length() != 0) {
 					try {
-						
-						boolean idTaken = false;
 						boolean accNumTaken=false;
-					 
 							for (Map.Entry<Integer, BankAccount> entry : table.entrySet()) {					
 								 if(entry.getValue().getAccountNumber().trim().equals(accountNumberTextField.getText())){
 									 accNumTaken=true;	 
@@ -89,11 +67,7 @@ public class CreateBankDialog extends JFrame {
 						if(!accNumTaken){
 							BankAccount account = new BankAccount(accountNumber, surname, firstName, accountType, 0.0, 0.0);
 							int key = Integer.parseInt(account.getAccountNumber());
-							int hash = (key%BankApplication.TABLE_SIZE);
-							while(table.containsKey(hash)){
-								hash = hash+1;
-							}
-							table.put(hash, account);
+							put(key, account);
 						}
 						else{
 							JOptionPane.showMessageDialog(null, "Account Number must be unique");
@@ -114,13 +88,20 @@ public class CreateBankDialog extends JFrame {
 			}
 		});
 		
-		setSize(400,800);
-		pack();
-		setVisible(true);
-
 	}
 
-	private void createLabelsAndTextFields() {
+	private void createButtons() {
+		JPanel buttonPanel = new JPanel(new FlowLayout());
+		addButton = new JButton("Add");
+		cancelButton = new JButton("Cancel");
+		
+		buttonPanel.add(addButton);
+		buttonPanel.add(cancelButton);
+		
+		add(buttonPanel, BorderLayout.SOUTH);
+	}
+
+	private void createLabelsAndTextFields(JComboBox<String> comboBox) {
 		JPanel dataPanel = new JPanel(new MigLayout());
 		accountNumberLabel = new JLabel("Account Number: ");
 		accountNumberTextField = new JTextField(15);
