@@ -35,7 +35,7 @@ public class CreateBankDialog extends JFrame {
 		table = accounts;
 		setLayout(new BorderLayout());
 		String[] comboTypes = {"Current", "Deposit"};
-		JComboBox<String> comboBox = new JComboBox<String>(comboTypes);
+		final JComboBox<String> comboBox = new JComboBox<String>(comboTypes);
 		
 		createLabelsAndTextFields(comboBox);
 		createButtons();
