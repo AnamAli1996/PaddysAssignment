@@ -231,8 +231,7 @@ public class BankApplication extends JFrame {
 				if (answer == JOptionPane.YES_OPTION) {
 					FileHandling.saveFileAs();
 					dispose();
-				}
-				else if(answer == JOptionPane.NO_OPTION)
+				}else if(answer == JOptionPane.NO_OPTION)
 					dispose();
 			}
 		});	
@@ -352,7 +351,8 @@ public class BankApplication extends JFrame {
 
 	private void displayCurrentItems() {
 		currentItem=0;
-		do{currentItem++;
+		do{
+			currentItem++;
 		}while(!table.containsKey(currentItem));
 		displayDetails(currentItem);
 	}
@@ -453,7 +453,5 @@ public class BankApplication extends JFrame {
 			fields.get("Overdraft").setText(table.get(currentItem).getOverdraft()+"");
 		else
 			fields.get("Overdraft").setText("Only applies to current accs");
-
 	}
 }
-
