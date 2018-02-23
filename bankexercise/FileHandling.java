@@ -13,24 +13,18 @@ public class FileHandling {
 
 	public static void openFileRead()
 	{
-
 		BankApplication.table.clear();
 
 		fc = new JFileChooser();
 		int returnVal = fc.showOpenDialog(null);
-
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			file = fc.getSelectedFile();
-
-		} else {
 		}
-
 		//Open file
 		try{
 			if(file !=null)
 				input = new RandomAccessFile(file, "r" );
-		} // end try
-		catch ( IOException ioException ){
+		}catch ( IOException ioException ){
 			JOptionPane.showMessageDialog(null, "File Does Not Exist.");
 		} // end catch
 	} // end method openFile
@@ -42,8 +36,7 @@ public class FileHandling {
 			try {
 				output = new RandomAccessFile( fileToSaveAs, "rw" );
 				JOptionPane.showMessageDialog(null, "Accounts saved to " + fileToSaveAs);
-			} // end try
-			catch ( IOException ioException ){
+			}catch ( IOException ioException ){
 				JOptionPane.showMessageDialog(null, "File does not exist.");
 			} // end catch
 		}
@@ -67,26 +60,25 @@ public class FileHandling {
 				JOptionPane.showMessageDialog(null, "Cancelled");
 			}else
 				output = new RandomAccessFile(fc.getSelectedFile(), "rw" );
-		} catch (FileNotFoundException e) {
+		}catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public static void closeFile() {
 		try{
-			if ( input != null )
+			if(input != null)
 				input.close();
-		}catch ( IOException ioException ){
-			JOptionPane.showMessageDialog(null, "Error closing file.");//System.exit( 1 );
+		}catch(IOException ioException){
+			JOptionPane.showMessageDialog(null, "Error closing file.");
 		} // end catch
 	} // end method closeFile
 
 	public static void readRecords(){
 		RandomAccessBankAccount record = new RandomAccessBankAccount();
 		try{
-			while(true){
-				do{
-					if(input!=null)
+			do{
+				do{if(input!=null)
 						record.read( input );
 				} while ( record.getAccountID() == 0 );
 
@@ -98,7 +90,7 @@ public class FileHandling {
 					hash = hash+1;
 				}
 				BankApplication.table.put(hash, ba);
-			} // end while
+			}while(true);
 		} // end try
 		catch ( EOFException eofException ){
 			return; // end of file was reached
