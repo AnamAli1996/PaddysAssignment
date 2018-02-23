@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.Map.Entry;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import net.miginfocom.swing.MigLayout;
@@ -27,7 +26,6 @@ public class BankApplication extends JFrame {
 	String[] uiComp = {"Account ID", "Account Number", "First Name", "Surname", "Account Type", "Balance", "Overdraft"};
 	Map<String, JLabel> labels = new HashMap<String, JLabel>();
 	Map<String, JTextField> fields = new HashMap<String, JTextField>();
-
 	JTable jTable;
 	double interestRate;
 	int currentItem=0;
@@ -107,9 +105,9 @@ public class BankApplication extends JFrame {
 				int maxKey = Collections.max(addArray());	
 				if(currentItem<maxKey){
 					currentItem++;
-					while(!table.containsKey(currentItem)){
+					do{
 						currentItem++;
-					}
+					}while(!table.containsKey(currentItem));
 				}
 				displayDetails(currentItem);			
 			}	
@@ -121,9 +119,9 @@ public class BankApplication extends JFrame {
 				int minKey = Collections.min(addArray());			
 				if(currentItem>minKey){
 					currentItem--;
-					while(!table.containsKey(currentItem)){
-						currentItem--;
-					}
+						do{
+							currentItem--;
+						}while(!table.containsKey(currentItem));
 				}
 				displayDetails(currentItem);				      
 			}
@@ -134,9 +132,9 @@ public class BankApplication extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				saveOpenValues();
 				currentItem =TABLE_SIZE;			
-				while(!table.containsKey(currentItem)){
-					currentItem--;	
-				}
+					do{
+						currentItem--;	
+					}while(!table.containsKey(currentItem));
 				displayDetails(currentItem);
 			}
 		};
