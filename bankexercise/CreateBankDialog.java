@@ -151,7 +151,4 @@ public class CreateBankDialog extends JFrame {
 		add(dataPanel, BorderLayout.CENTER);
 
 	}
-
-
-
 }

@@ -7,5 +7,4 @@ public class Main {
 		ba.pack();
 		ba.setVisible(true);
 	}
-
 }
