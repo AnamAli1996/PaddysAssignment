@@ -42,7 +42,6 @@ public class BankApplication extends JFrame {
 		createButtons();
 		createMenus();
 		addActionListeners();
-
 	}
 
 	//Method for creating buttons
@@ -87,7 +86,6 @@ public class BankApplication extends JFrame {
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Overdraft only applies to Current Accounts");
-
 			}
 		});
 

@@ -17,19 +17,17 @@ public class CreateBankDialog extends JFrame {
 	HashMap<Integer, BankAccount> table = new HashMap<Integer, BankAccount>();
 	private static int counter = 0;
 	private int accountId;
+	JLabel accountNumberLabel, firstNameLabel, surnameLabel, accountTypeLabel, balanceLabel, overdraftLabel;
+	JTextField accountNumberTextField, firstNameTextField, surnameTextField, accountTypeTextField, balanceTextField, overdraftTextField;
+	JButton addButton, cancelButton;
 	
 	public void put(int key, BankAccount value){
 		int hash = (key%BankApplication.TABLE_SIZE);
 		do {
 			hash+=1;
 		}while(table.containsKey(key));
-		
 		table.put(hash, value);
 	}
-
-	JLabel accountNumberLabel, firstNameLabel, surnameLabel, accountTypeLabel, balanceLabel, overdraftLabel;
-	JTextField accountNumberTextField, firstNameTextField, surnameTextField, accountTypeTextField, balanceTextField, overdraftTextField;
-	JButton addButton, cancelButton;
 
 	CreateBankDialog(HashMap<Integer, BankAccount> accounts) {
 		super("Add Bank Details");
@@ -63,8 +61,7 @@ public class CreateBankDialog extends JFrame {
 							if(entry.getValue().getAccountNumber().trim().equals(accountNumberTextField.getText())){
 								accNumTaken=true;	 
 							}
-						}
-
+						} 
 						if(!accNumTaken){
 							BankAccount account = new BankAccount(accountId, accountNumber, surname, firstName, accountType, 0.0, 0.0);
 							int key = Integer.parseInt(account.getAccountNumber());

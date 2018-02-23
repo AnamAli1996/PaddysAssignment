@@ -91,8 +91,7 @@ public class FileHandling {
 				}
 				BankApplication.table.put(hash, ba);
 			}while(true);
-		} // end try
-		catch ( EOFException eofException ){
+		}catch ( EOFException eofException ){
 			return; // end of file was reached
 		}
 		catch ( IOException ioException ){
